@@ -1,0 +1,55 @@
+FROM pytorch/pytorch:latest
+
+RUN apt update && \
+  apt install -y jq dnsutils wget net-tools
+
+
+RUN python -m pip install --upgrade pip && \
+  pip install torch torchvision web3 idx2numpy numpy click tqdm asyncio --no-cache-dir ipfshttpclient
+
+# installs IPFS on the system
+RUN wget https://dist.ipfs.io/go-ipfs/v0.7.0/go-ipfs_v0.7.0_linux-amd64.tar.gz && \
+  tar -xvzf go-ipfs_v0.7.0_linux-amd64.tar.gz && \
+  cd go-ipfs && \
+  bash install.sh && \
+  ipfs --version
+
+# creates a dataset directory in the container
+RUN mkdir -p /root/dataset
+
+
+RUN touch weights.json
+##  copies from the local to the docker image
+COPY /setup/zkSync-local-node-L2/accounts.json /root/accounts.json
+COPY /scripts/python/client.py /root/client.py
+COPY /scripts/bash/client.sh  /root/client.sh
+COPY /scripts/python/client_register.py /root/client_register.py
+COPY /scripts/bash/client_register.sh  /root/client_register.sh
+COPY /scripts/python/admin.py /root/admin.py
+COPY /scripts/bash/admin.sh  /root/admin.sh
+COPY /scripts/python/admin_authorize.py /root/admin_authorize.py
+COPY /scripts/bash/admin_authorize.sh  /root/admin_authorize.sh
+COPY /scripts/python/admin_apiConsumer.py /root/admin_apiConsumer.py
+COPY /scripts/bash/admin_apiConsumer.sh  /root/admin_apiConsumer.sh
+COPY /scripts/python/task_publisher.py /root/task_publisher.py
+COPY /scripts/bash/task_publisher.sh  /root/task_publisher.sh
+COPY /scripts/python/task_publisher_round.py /root/task_publisher_round.py
+COPY /scripts/bash/task_publisher_round.sh  /root/task_publisher_round.sh
+COPY /setup/zkSync-local-node-L2/rich-wallets.json  /root/rich-wallets.json
+COPY federated_learning/regular_user /root/FederatedLearning
+
+
+
+RUN chmod +x /root/client.sh
+RUN chmod +x /root/client_register.sh
+RUN chmod +x /root/admin.sh
+RUN chmod +x /root/admin_authorize.sh
+RUN chmod +x /root/admin_apiConsumer.sh
+RUN chmod +x /root/task_publisher.sh
+RUN chmod +x /root/task_publisher_round.sh
+
+
+
+WORKDIR /root
+
+ENTRYPOINT ["/bin/bash"]

@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    # network_mode: bridge
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+
+networks:
+  default:
+    external:
+      name: BCFL
+volumes:
+  prom_data:
+  grafana-data:

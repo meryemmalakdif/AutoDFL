@@ -1,0 +1,58 @@
+version: '3.2'
+services:
+  geth:
+    image: "my-custom-geth-image"
+    logging:
+        driver: "json-file"
+    ports:  
+      - "8545:8545"
+      - "8546:8546"
+      - "6060:6060"
+    volumes:
+      - ./geth:/var/lib/geth/data 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+  postgres:
+    image: "postgres:12"
+    logging:
+      driver: none 
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWORD=notsecurepassword
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  zksync:  
+    stdin_open: true
+    tty: true
+    image: matterlabs/local-node:beta2.0
+
+    depends_on:
+      - geth
+      - postgres
+
+    ports:
+      - "3050:3050" # JSON RPC HTTP port
+      - "3051:3051" # JSON RPC WS port
+      
+
+    environment:
+      - DATABASE_URL=postgres://postgres:notsecurepassword@postgres/zksync_local
+      - ETH_CLIENT_WEB3_URL=http://geth:8545
+
+
+networks:
+  default:
+    external:
+      name: BCFL
+
+volumes:
+  geth:
+  postgres:
+  zksync-config:
+  zksync-data:
+
+

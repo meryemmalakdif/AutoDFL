@@ -1,0 +1,28 @@
+{
+  "caliper": {
+      "blockchain": "ethereum"
+  },
+  "ethereum": {
+      "txFeeCap": 6.00,
+      "url": "ws://172.16.240.6:8546",
+      "contractDeployerAddress": "0x0403996469e2Dbb1f675154C7264Ed9Ba1c7B79f",
+      "contractDeployerAddressPrivateKey": "0x3ffa76af9183c66ca640f45a81c78dd1f5f3787f1a5f7d285d3d481c89967a25",
+      "contractDeployerAddressPassword": "pIuRCa2vz3sPXz0",
+      "fromAddress":"0x0403996469e2Dbb1f675154C7264Ed9Ba1c7B79f",
+      "fromAddressPrivateKey":"0x3ffa76af9183c66ca640f45a81c78dd1f5f3787f1a5f7d285d3d481c89967a25",
+      "fromAddressPassword": "pIuRCa2vz3sPXz0",
+      "transactionConfirmationBlocks": 1,
+      "chainId": 4444,
+      "contracts": {
+          "BusinessLogic":{
+            "address":"0xEb66bfB79d4A3af2c8773Fe4fa7E10Ed12d7C0C7",
+              "estimateGas": true,
+              "gas": {
+                "function": 203960
+                
+              },
+              "abi": []
+          }
+      }
+  }
+}

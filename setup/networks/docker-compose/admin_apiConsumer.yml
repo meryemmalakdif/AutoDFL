@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  admin:
+    hostname: admin
+    image: fl-node
+    entrypoint: /root/admin_apiConsumer.sh
+    deploy:
+      replicas: $ADMINS
+    environment:
+      - IPFS_API=/dns/host.docker.internal/tcp/5001
+      - CONTRACT_APICONSUMER=$CONTRACT_APICONSUMER
+      - BUSINESS_CONTRACT_ADDRESS=$BUSINESS_CONTRACT_ADDRESS
+    volumes:
+      #- ../../../artifacts/@chainlink/contracts/src/v0.8/operatorforwarder/dev/$ABI_FILE_ORACLE.sol/$ABI_ORACLE.json:/root/abi_operator.json
+      - ../../../artifacts-zk/contracts/Oracle-contracts/APIconsumer.sol/APIConsumer.json:/root/abi.json
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  default:
+    external:
+      name: BCFL

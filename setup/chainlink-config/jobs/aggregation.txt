@@ -1,0 +1,28 @@
+type = "directrequest"
+schemaVersion = 1
+name = "aggregation"
+externalJobID = "4545689b-4d0d-4d23-917f-cdbc5127328c"
+forwardingAllowed = false
+maxTaskDuration = "0s"
+contractAddress = "0xf20c4bEbd07368578Db26f814b9934f22F9aa8E9"
+evmChainID = "9"
+minIncomingConfirmations = 0
+minContractPaymentLinkJuels = "0"
+observationSource = """
+    decode_log   [type=ethabidecodelog
+                  abi="OracleRequest(bytes32 indexed specId, address requester, bytes32 requestId, uint256 payment, address callbackAddr, bytes4 callbackFunctionId, uint256 cancelExpiration, uint256 dataVersion, bytes data)"
+                  data="$(jobRun.logData)"
+                  topics="$(jobRun.logTopics)"]
+
+    decode_cbor  [type=cborparse data="$(decode_log.data)"]
+    fetch        [type=bridge name="ea-bridge-aggregation" requestData="{\\"id\\": $(jobSpec.externalJobID), \\"data\\": { \\"local_models\\": $(decode_cbor.local_models), \\"scores\\": $(decode_cbor.scores),  \\"global_model_hash\\": $(decode_cbor.global_model_hash)}}"]
+    parse        [type=jsonparse path="data,globalModelWeightsHash" data="$(fetch)"]
+    parse_two        [type=jsonparse path="data,globalModelWeightsAccuracy" data="$(fetch)"]
+    encode_data  [type=ethabiencode abi="(bytes32 requestId,string value, uint256 accuracy_value)" data="{\\"requestId\\": $(decode_log.requestId),\\"value\\": $(parse) , \\"accuracy_value\\": $(parse_two) }"]
+    encode_tx    [type=ethabiencode
+                  abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
+                  data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"]
+    submit_tx    [type=ethtx to="0xf20c4bEbd07368578Db26f814b9934f22F9aa8E9" data="$(encode_tx)"]
+
+    decode_log -> decode_cbor -> fetch -> parse -> parse_two -> encode_data -> encode_tx -> submit_tx
+"""

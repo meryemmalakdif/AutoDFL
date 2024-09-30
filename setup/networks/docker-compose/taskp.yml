@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  publisher:
+    hostname: task_publisher
+    image: fl-node
+    #network_mode: "host"
+    entrypoint: /root/task_publisher.sh
+    deploy:
+      replicas: $TASKPUBLISHERS
+    environment:
+      - IPFS_API=/dns/host.docker.internal/tcp/5001
+      - CONTRACT=$CONTRACT
+      - ROUNDS=$ROUNDS
+      - TRAINERS=$TRAINERS
+      - PRIVATEKEY=$PRIVATEKEY
+    volumes:
+      - '../../../federated_learning/regular_user/mimi.txt:/root/mimi.txt' 
+      - '../../../federated_learning/regular_user/data.json:/root/data.json' 
+
+      #- ../../build/contracts/$ABI.json:/root/abi.json
+      # - ../../artifacts/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+      # - ../../artifacts/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+      # - ../../artifacts/contracts/Oracle-contracts/APIconsumer.sol/APIConsumer.json:/root/abi.json
+      - ../../../artifacts-zk/contracts/Oracle-contracts/APIconsumer.sol/APIConsumer.json:/root/abi_oracle.json
+
+
+      - ../../../artifacts-zk/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  default:
+    external:
+      name: BCFL

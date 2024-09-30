@@ -1,0 +1,35 @@
+# Linux-based image, so the resulting container will also be Linux-based
+ARG BASE='ethereum/client-go:v1.10.16'
+
+FROM $BASE
+
+RUN apk update && apk add jq bind-tools
+
+# COPY --from=docker /usr/local/bin/docker /usr/bin/docker
+
+COPY scripts/bash/validator.sh /validator.sh
+
+COPY scripts/bash/owner.sh /owner.sh
+COPY setup/L1/blockchain/datadir/accounts.json /
+COPY setup/L1/blockchain/datadir/genesis_poa.json /genesis.json
+COPY setup/L1/blockchain/datadir/keystore /root/.ethereum/keystore
+COPY setup/L1/blockchain/datadir/geth/static-nodes.json /root/.ethereum/geth/static-nodes.json
+COPY setup/L1/blockchain/datadir/geth /root/.ethereum/_geth
+
+RUN cat /genesis.json
+
+RUN geth init /genesis.json \
+  && rm -f ~/.ethereum/geth/nodekey
+
+
+
+# When you start the container using docker run, by default, Geth will be launched instead of a shell like /bin/bash.
+# Any arguments passed to docker run will be directly forwarded to Geth as its command-line arguments.
+
+ENTRYPOINT ["geth"]
+
+
+##  tailored specifically for running an Ethereum node with miner and owner functionalities, using the Geth client
+# Set the CMD to start a shell session
+
+# CMD ["/bin/sh"]

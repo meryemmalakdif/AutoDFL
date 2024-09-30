@@ -1,0 +1,80 @@
+version: '3.7'
+
+services:
+  client:
+    hostname: client
+    image: fl-node
+    #network_mode: "host"
+    entrypoint: /root/client.sh
+    deploy:
+      replicas: $CLIENTS
+    environment:
+      - IPFS_API=/dns/host.docker.internal/tcp/5001
+      - CONTRACT=$CONTRACT
+      - TASK=$TASK
+      - PRIVATEKEY=$PRIVATEKEY
+    volumes:
+      - '../../../federated_learning/regular_user/mimi.txt:/root/mimi.txt'
+      - '../../../federated_learning/regular_user/results.txt:/root/results.txt'
+      - '../../../federated_learning/regular_user/trainers.txt:/root/trainers.txt'
+      - '../../../federated_learning/regular_user/updates.txt:/root/updates.txt'
+      - '../../../federated_learning/regular_user/clients.txt:/root/clients.txt'
+      - '../../../federated_learning/regular_user/weights.txt:/root/weights.txt'
+      - '../../../federated_learning/regular_user/data_manipulation/data:/root/dataset'
+      - ../../../artifacts-zk/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+
+      - ../../../artifacts-zk/contracts/Oracle-contracts/APIconsumer.sol/APIConsumer.json:/root/abi11.json
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  task_publisher:
+    hostname: task_publisher_round
+    image: fl-node
+    # network_mode: "host"
+    entrypoint: /root/task_publisher_round.sh
+    deploy:
+      replicas: $TASKPUBLISHERS
+    environment:
+      - IPFS_API=/dns/host.docker.internal/tcp/5001
+      - CONTRACT=$CONTRACT
+      - TASK=$TASK
+      - PRIVATEKEY=$PRIVATEKEY
+    volumes:
+      - '../../../federated_learning/regular_user/mimi.txt:/root/mimi.txt'
+      - '../../../federated_learning/regular_user/updates.txt:/root/updates.txt'
+      - ../../../artifacts-zk/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+      #- ../../build/contracts/$ABI.json:/root/abi.json
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  admin:
+    hostname: admin
+    image: fl-node
+    entrypoint: /root/admin.sh
+    deploy:
+      replicas: $ADMINS
+    environment:
+      - IPFS_API=/dns/host.docker.internal/tcp/5001
+      - CONTRACT=$CONTRACT
+      - CONTRACT_REPUTATION=$CONTRACT_REPUTATION
+      - CONTRACT_ORACLE=$CONTRACT_ORACLE
+      - TASK=$TASK
+      - PRIVATEKEY=$PRIVATEKEY
+      - EVALUATION_NAME=$EVALUATION_NAME
+    volumes:
+      - '../../../federated_learning/regular_user/performance.txt:/root/performance.txt' 
+      - ../../../artifacts-zk/contracts/$ABI_FILE_REP.sol/$ABI_REP.json:/root/abi_rep.json
+      - ../../../artifacts-zk/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+      - ../../../artifacts/contracts/Oracle-contracts/$ABI_FILE_ORACLE.sol/$ABI_ORACLE.json:/root/abi_oracle.json
+
+ 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+networks:
+  default:
+    external:
+      name: BCFL
+

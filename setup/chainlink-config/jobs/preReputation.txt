@@ -1,0 +1,28 @@
+type = "directrequest"
+schemaVersion = 1
+name = "preReputation"
+externalJobID = "332cd912-2a43-4ac7-a2ac-2514c835dd19"
+forwardingAllowed = false
+maxTaskDuration = "0s"
+contractAddress = "0xf20c4bEbd07368578Db26f814b9934f22F9aa8E9"
+evmChainID = "9"
+minIncomingConfirmations = 0
+minContractPaymentLinkJuels = "0"
+observationSource = """
+    decode_log   [type=ethabidecodelog
+                  abi="OracleRequest(bytes32 indexed specId, address requester, bytes32 requestId, uint256 payment, address callbackAddr, bytes4 callbackFunctionId, uint256 cancelExpiration, uint256 dataVersion, bytes data)"
+                  data="$(jobRun.logData)"
+                  topics="$(jobRun.logTopics)"]
+
+    decode_cbor  [type=cborparse data="$(decode_log.data)"]
+    fetch        [type=bridge name="ea-bridge-rep" requestData="{\\"id\\": $(jobSpec.externalJobID), \\"data\\": { \\"trainers\\": $(decode_cbor.trainers), \\"accuracies\\": $(decode_cbor.accuracies) }}"]
+    parse        [type=jsonparse path="data,scores" data="$(fetch)"]
+    parse_two        [type=jsonparse path="data,addrs" data="$(fetch)"]
+    encode_data  [type=ethabiencode abi="(bytes32 requestId,uint256[] scores_value, string trainers)" data="{\\"requestId\\": $(decode_log.requestId),\\"scores_value\\": $(parse) , \\"trainers\\": $(parse_two) }"]
+    encode_tx    [type=ethabiencode
+                  abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
+                  data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"]
+    submit_tx    [type=ethtx to="0xf20c4bEbd07368578Db26f814b9934f22F9aa8E9" data="$(encode_tx)"]
+
+    decode_log -> decode_cbor -> fetch -> parse -> parse_two -> encode_data -> encode_tx -> submit_tx
+"""

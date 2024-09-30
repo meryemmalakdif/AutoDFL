@@ -1,0 +1,29 @@
+type = "directrequest"
+schemaVersion = 1
+name = "evaluation"
+externalJobID = "6868419d-5f6b-42a7-b571-8abfb0c4c6c8"
+forwardingAllowed = false
+maxTaskDuration = "0s"
+contractAddress = "0xDCf4717Bd9786E72c35a32972541D15644bC3e9c"
+evmChainID = "9"
+minIncomingConfirmations = 0
+minContractPaymentLinkJuels = "0"
+observationSource = """
+    decode_log   [type=ethabidecodelog
+                  abi="OracleRequest(bytes32 indexed specId, address requester, bytes32 requestId, uint256 payment, address callbackAddr, bytes4 callbackFunctionId, uint256 cancelExpiration, uint256 dataVersion, bytes data)"
+                  data="$(jobRun.logData)"
+                  topics="$(jobRun.logTopics)"]
+
+    decode_cbor  [type=cborparse data="$(decode_log.data)"]
+    fetch        [type=bridge name="ea-bridge" requestData="{\\"id\\": $(jobSpec.externalJobID), \\"data\\": { \\"local_hash\\": $(decode_cbor.local_hash),\\"trainers\\": $(decode_cbor.trainers), \\"model_hash\\": $(decode_cbor.model_hash),  \\"global_weights_hash\\": $(decode_cbor.global_weights_hash), \\"evaluation\\": $(decode_cbor.evaluation) , \\"round\\": $(decode_cbor.round) }}"]
+    parse        [type=jsonparse path="data,scores" data="$(fetch)"]
+    parse_three        [type=jsonparse path="data,behaviour" data="$(fetch)"]
+    
+    encode_data  [type=ethabiencode abi="(bytes32 requestId,uint256[] value,  uint256[] behaviour_value)" data="{\\"requestId\\": $(decode_log.requestId),\\"value\\": $(parse),  \\"behaviour_value\\": $(parse_three) }"]
+    encode_tx    [type=ethabiencode
+                  abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
+                  data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"]
+    submit_tx    [type=ethtx to="0xDCf4717Bd9786E72c35a32972541D15644bC3e9c" data="$(encode_tx)"]
+
+    decode_log -> decode_cbor -> fetch -> parse -> parse_three -> encode_data -> encode_tx -> submit_tx
+"""

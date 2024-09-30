@@ -1,0 +1,41 @@
+# scrape_configs:
+#   - job_name: besu
+#     scrape_interval: 15s
+#     scrape_timeout: 10s
+#     metrics_path: /metrics
+#     scheme: http
+#     static_configs:
+#       - targets:
+#         - 172.16.240.3:8545
+
+
+# scrape_configs:
+#   - job_name: "geth"
+#     scrape_interval: "15s"
+#     static_configs:
+#       - targets: ["172.16.240.3:8545"]
+
+
+
+# scrape_configs:
+# - job_name: 'geth_node'
+#   metrics_path: /debug/metrics/prometheus
+#   static_configs:
+#   - targets: ["172.16.240.4:6060"]
+
+
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets: []
+    scheme: http
+    timeout: 10s
+scrape_configs:
+- job_name: 'geth_node'
+  metrics_path: /debug/metrics/prometheus
+  static_configs:
+  - targets: ["172.16.240.3:6060"]

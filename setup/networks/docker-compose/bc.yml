@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+  rpc-endpoint:
+    hostname: rpc-endpoint
+    image: bc-node
+    entrypoint: /owner.sh
+    environment:
+      - NETWORK_ID=${NETWORK_ID}
+    command:
+      --allow-insecure-unlock
+      --http
+      --http.addr="0.0.0.0"
+      --http.port=8545
+      --http.api="eth,web3,net,admin,personal"
+      --http.corsdomain="*"
+      --ws
+      --ws.addr="0.0.0.0"
+      --ws.port=8546
+      --ws.api="eth,web3,net,admin,personal"
+      --netrestrict="172.16.240.0/20"
+      --metrics
+      --metrics.addr="0.0.0.0"
+      --metrics.port=6060
+      --metrics.expensive
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+
+  validator:
+    hostname: validator
+    deploy:
+      replicas: $MINERS
+    image: bc-node
+    entrypoint: /validator.sh
+    environment:
+      - NETWORK_ID=${NETWORK_ID}
+    command:
+      --mine
+      --miner.threads=1
+      --allow-insecure-unlock
+      --http
+      --http.addr="0.0.0.0"
+      --http.port=8545
+      --http.api="eth,web3,net,admin,personal"
+      --http.corsdomain="*"
+      --ws
+      --ws.addr="0.0.0.0"
+      --ws.port=8546
+      --ws.api="eth,web3,net,admin,personal"
+      --netrestrict="172.16.240.0/20"
+      --metrics
+      --metrics.addr="0.0.0.0"
+      --metrics.port=6060
+      --metrics.expensive
+
+
+networks:
+  default:
+    external:
+      name: BCFL
