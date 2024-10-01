@@ -29,7 +29,6 @@ from FederatedLearning.utilities import load_data
 def main(provider, abi, ipfs, account, passphrase, contract, train, test, learning_rate, epochs, task):
   # Get Contract
   contract_task = smart_contract_functions.Contract_zksync(provider, abi, contract, passphrase) 
-  ania = contract_task.get_trainers()
   # we re doing this because when we pass args from bash script , the scripts gets them as a string for some reason  yaelmha rabi
   if not isinstance(task, int):
     try:

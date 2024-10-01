@@ -46,7 +46,7 @@ class StoreWorkload extends WorkloadModuleBase {
 
         if(!isInit){
             isInit = true;
-            var data = fs.readFileSync("./workload/workload.json");
+            var data = fs.readFileSync("./workload/publishTaskWorkload.json");
             data= JSON.parse(data);
         
             data.forEach(item => {

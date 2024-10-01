@@ -2,34 +2,18 @@
 pragma solidity ^0.8.0;
 
 
-contract Admin {
+contract AccesManagement {
     
     address private admin;
     address  [] public adminsList ; 
     mapping(address => bool) public adminExist;
  
-    address payable [] public accountlist;
-    mapping (address => User) public accountslist;
-    address payable [] public pendingList;
-    mapping (address => bool) public accountsPending;
+
+    address[] public taskPublishers;
+    address[] public trainers;    
 
     address [] private oracleAdresses; 
     mapping (address => bool) private oracleExist ; 
-    
-    struct User {
-        address payable userAdress; 
-        uint reputation; 
-        uint numberOfSubmissions ;
-        bool exist; 
-        // string [] expertise ;
-    }
-
-    function createAccount(address payable _address) public {
-    require(accountsPending[_address]==false);
-    pendingList.push(_address);
-    accountsPending[_address]=true;
-    }
-
 
     constructor() {
         admin = msg.sender;
@@ -52,36 +36,42 @@ contract Admin {
         adminExist[_newOwner]= true;
     }
 
-    function validateUser(address payable  _newUser  ) public onlyOwner(){
-        require(accountsPending[_newUser]==true);
-        accountlist.push(_newUser); 
-        accountslist[_newUser]= User(_newUser,0,0,true);
-        
-    }
-    
     function addOracleAdress(address _address) public onlyOwner(){
         oracleAdresses.push(_address);
         oracleExist[_address]=true;
-    }
-    
-    function setReputation(address _user , uint256 _newRep) public onlyOracle(){
-        accountslist[_user].reputation = _newRep; 
     }
     
 
     function isOwner(address _user) public view returns (bool) {
         return adminExist[_user];
     }
-   
-    // Restrict to admin using only admin modifier if needed 
-    function isPending(address _user) public view  returns (bool) {
-        return accountsPending[_user];
-    }
     
-    function isUser(address _user) public view returns  (bool){
-        return accountslist[_user].exist; 
+    function isTrainer(address _addr) public view returns  (bool){
+        bool found = false;
+        if (trainers.length > 0) {
+            for (uint i = 0; i < trainers.length; i++) {
+                if (trainers[i] == _addr) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
     }
 
+
+    function isTaskPublisher(address _addr) public view returns  (bool){
+        bool found = false;
+        if (taskPublishers.length > 0) {
+            for (uint i = 0; i < taskPublishers.length; i++) {
+                if (taskPublishers[i] == _addr) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
+    }    
 
     function isOracle(address _address)public view returns (bool){
         return oracleExist[_address];

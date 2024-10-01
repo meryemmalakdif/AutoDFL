@@ -178,6 +178,8 @@ authorize_operator(){
 }
 
 
+
+
 declare -A function_params
 
 # Predefined parameters for functions necessary to set up a blockchain network with a single layer , in case of L2 skip all these commands
@@ -191,6 +193,7 @@ function_params[connect_peers]="8fdf1946a39b"
 
 # Predefined parameters for function necessary to authorize the oracle operator node
 function_params[authorize_operator]="0xc2E286Dd195B87F29bd6456DaD18f6DcAaE033A1 1 Operator Operator 0x8CA5DAdA4E0646b6594eb538779303cB10809C72"
+
 
 
 

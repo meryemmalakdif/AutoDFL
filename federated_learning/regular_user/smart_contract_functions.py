@@ -356,18 +356,6 @@ class Contract_zksync():
     })
     return tx , self.wait_tx(tx,self.private_key)
 
-  def testit(self,taskId,round,trainers):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.testit(taskId,round,trainers).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
-          
-
-
 
   def is_trainer_for_task(self,taskId,address):
     return self.contract.functions.isTrainerForTask(taskId,address).call()
@@ -428,8 +416,7 @@ class Contract_zksync():
   def get_total_participation_level(self,addr):
     return self.contract.functions.totalParticipationLevel(addr).call()
              
-  def gettestit(self,taskId, taskTrainers):
-    return self.contract.functions.gettestit(taskId,taskTrainers).call()
+
   def upload_scores(self, task, round, scores):
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
@@ -465,10 +452,7 @@ class Contract_zksync():
   def get_round_phase(self):
     return RoundPhase(self.contract.functions.roundPhase().call())
 
-  def get_training_round(self):
-    [round, weights_cid] = self.contract.functions.getRoundForTraining().call()
-    return (round, weights_cid)
-  
+ 
 
   def get_all_tasks(self):
     return self.contract.functions.getAllTasks().call()
@@ -480,9 +464,6 @@ class Contract_zksync():
     self.unlock_account()
     tx = self.contract.functions.startRound(*args).transact()
     return tx, self.__wait_tx(tx)
-  
-  def get_trainers(self):
-    return self.contract.functions.getTrainers().call()
   
 
 
@@ -544,14 +525,10 @@ class Contract_zksync():
   def get_number(self):
     return self.contract.functions.getNUmber().call()
     
-  def get_updates_task_round(self,task,round):
-    return self.contract.functions.updatesTask(task,round).call()
-  
+
   def get_scores_task_round(self,task,round):
     return self.contract.functions.getRoundScores(task,round).call()
   
-  def get_single_update(self,task,task_trainer,round):
-    return self.contract.functions.getSingleUpdate(task,task_trainer,round).call()
 
   def get_aggregations_task_round(self,task,round):
     return self.contract.functions.aggregationsTask(task,round).call()
