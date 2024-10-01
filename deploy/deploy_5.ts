@@ -5,7 +5,7 @@ import { deployContract } from "./utils";
 // as well as verify it on Block Explorer if possible for the network
 export default async function () {
   const contractArtifactName = "ManageReputation";
-  const constructorArguments = ["0xBE6Fc9B483329b65e7be1747a7B12193820e8654"];
+  const constructorArguments = ["0x8CCd78c8748747F355cd2720e8402e192c3f7d96"];
   await deployContract(contractArtifactName,constructorArguments);
 }
 

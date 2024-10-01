@@ -191,10 +191,14 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
 
       time.sleep(10)
 
-      obj , subj = contract_reputation.getReputationArrays()
+      obj , subj , workers = contract_reputation.getReputationArrays()
       with open('performance.txt', 'a') as file:
-        file.write(f" {obj} \n")   
-        file.write(f" {subj} \n")       
+        file.write(f" obj {obj} \n")   
+        file.write(f" subj {subj} \n") 
+        file.write(f" workers {workers} \n")  
+        file.write(f" finishing round {i+1} \n")       
+     
+      
     
       all_reputation = contract_task.get_all_reputation()
 

@@ -348,16 +348,32 @@ contract BusinessLogic {
     return found;
   } 
 
-    function isInIntArray(uint[] memory arr,uint look) public view returns (bool) {
-        bool found = false;
-        for (uint i = 0; i < arr.length; i++) {
-            if (arr[i] > look) {
-                found = true;
-                break;
-            }
+
+
+
+function isInIntArray(uint[] memory arr, uint look) public view returns (bool) {
+    uint participationPeriod = 4;  // Each period spans 4 rounds
+
+    for (uint i = 0; i < arr.length; i++) {
+        uint start = arr[i];
+        uint end = start + participationPeriod - 1;  // Calculate the end of the participation period
+
+if(look>=4){
+        // Check if the round is within the start and end range
+        if (look >= start && look <= end) {
+            return true;
         }
-        return found;
+}
+else{
+        if (look < start) {
+            return true;
+        }
+}
     }
+
+    return false;
+}
+
 
     function setReputation(address _addr, uint256 _newRep) public  {
         for (uint i = 0; i < accountsReputation.length; i++) {

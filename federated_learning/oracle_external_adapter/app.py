@@ -67,6 +67,8 @@ async def call_adapter_async():
     global_weights_hash=data["data"]["global_weights_hash"]
     evaluation_method=data["data"]["evaluation"]
 
+    round=data["data"]["round"]
+
 
 
     validation_loader = load_data("party_0.npz")
@@ -81,30 +83,78 @@ async def call_adapter_async():
 
 
     # getting the trainers addresses
-    # trainers = trainers.split("-")
+    trainers = trainers.split("-")
 
     # here is the local models weights
     # for each local update calculate the model's accuracy and then the marginal gain 
     local_cid = local_models_hashes.split("-")
 
+    if int(round)==0:
+        previous_gm_weights = weights_loader.load("QmZ8buiBbQGSF2C8yTxNeJPBHc8GzNdDvbHVNgn8KX8M8f") 
+    else:
+        previous_gm_weights = weights_loader.load(global_weights_hash) 
 
 
-    trainers = trainers.split("-")
 
  
     all_weights = []
 
 
-
     for i,c in enumerate(local_cid):
+        if (trainers[i]!="0xA13c10C0D5bd6f79041B9835c63f91de35A15883" and int(round)%2==0) or int(round)%2!=0:
+            # simulate senarios of behaviours
+            ## first senario a malicious trainer takes the previous global model's weights and slightly changes them 
+            if int(round)!=0 and trainers[i] == "0x0D43eB5B8a47bA8900d84AA36656c92024e9772e":
+                all_weights.append(np.array(perturb_array(previous_gm_weights, 25.3)))
+            else:
+                weights = get_model_weights(c)
+
+            # weights = weights.decode()
+
+            # print("Shape of weights_array:", type(weights))
+            # # weights_array = pickle.loads(weights)
+            # weights_list = eval(weights)
+
+            # # Convert the list to a NumPy array
+            # weights = np.array(weights_list)
+
+            # # Now you can access the shape
+            # print("Shape of weights:", weights.shape)
+
+            # random_weights = np.random.randn(*weights.shape)
+
+            # # Check for NaN values
+            # if np.isnan(random_weights).any():
+            #     print("Random weights contain NaN values!")
+            # else:
+            #     print("Random weights generated successfully.")
+            # with open('mimi.txt', 'a') as f:
+            #     f.write(f"papa : {random_weights}\n") 
+
+            # print("Shape of weights_array:", weights.shape)
+
+            # with open('mimi.txt', 'a') as f:
+            #     f.write(f" {trainers[i]} : {weights.decode()}\n") 
+                weights = weights.decode()            
+                weights = np.array(ast.literal_eval(weights))
+
+                all_weights.append(weights)
+        else:
+            if int(round)%2 == 0:
+                all_weights.append([])
+
+
+
+## normal senario where every trainer contributes honestly
+    # for i,c in enumerate(local_cid):
         
-        weights = get_model_weights(c)
-        weights = weights.decode()            
-        weights = np.array(ast.literal_eval(weights))
+    #     weights = get_model_weights(c)
+    #     weights = weights.decode()            
+    #     weights = np.array(ast.literal_eval(weights))
         
 
 
-        all_weights.append(weights)
+    #     all_weights.append(weights)
 
     scores = []
     interaction_type = []

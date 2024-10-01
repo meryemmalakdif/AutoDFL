@@ -53,27 +53,31 @@ contract ManageReputation {
 
     function iterateMappingPositive(BusinessLogic.Task memory _taskDetails, address _addr) public view returns (uint256) {
         uint256 _result = 0;
-        for (uint i = 0; i < _taskDetails.maxRounds; i++) {
-            _result += _roundPositivePerformance[_taskDetails.taskId][_addr][i + 2];
+        for (uint i = 0; i < _taskDetails.maxRounds; i+=4) {
+            _result += _roundPositivePerformance[_taskDetails.taskId][_addr][i + 4];
         }
         return _result;
     }
 
     function iterateMappingNegative(BusinessLogic.Task memory _taskDetails, address _addr) public view returns (uint256) {
         uint256 _result = 0;
-        for (uint i = 0; i < _taskDetails.maxRounds; i++) {
-            _result += _roundNegativePerformance[_taskDetails.taskId][_addr][i + 2];
+        for (uint i = 0; i < _taskDetails.maxRounds; i+=4) {
+            _result += _roundNegativePerformance[_taskDetails.taskId][_addr][i + 4];
         }
         return _result;
     }
 
         uint256[] public obj;
         uint256[] public subj;
+        address[] public workers;
+
         
 
     // Reputation updates occur at the end of each timeslot, which is composed of multiple training rounds
     function updateReputation(uint _taskId, uint _startingRound, uint _finishingRound, address[] memory _trainers, uint256[] memory _scores, uint256[] memory totalRounds) public {
-
+        delete obj;
+        delete subj;
+        delete workers;
         uint historical = 0;
         BusinessLogic.Task memory _taskDetails = taskContractInstance.getTaskById(_taskId);
         address _taskPublisher = _taskDetails.publisher;
@@ -125,6 +129,8 @@ contract ManageReputation {
             }
             obj.push(_objectiveRep);
             subj.push(_subjectiveRep);
+            workers.push(_trainers[j]);
+
             // get the previous reputation
             _prevRep = taskContractInstance.getReputation(_trainers[j]);
             // The weights assigned during the reputation update are based on the total interactions of the trainer within the system. As the number of interactions increases, it becomes more challenging to raise the trainer's reputation score.
@@ -140,17 +146,17 @@ contract ManageReputation {
                 _newRep = ((_scale - _weight) * _prevRep + _localRep * _weight);
             }
             // updating the reputation score of each trainer
-            taskContractInstance.setReputation(_trainers[j], _newRep);
+            taskContractInstance.setReputation(_trainers[j], _newRep/_scale);
             // At the end of the task, store all positive and negative interactions to include them in the historical interaction records
             if (_finishingRound == _taskDetails.maxRounds) {
-                _overallPositiveHistory[_taskPublisher][_trainers[j]] += _taskId * iterateMappingPositive(_taskDetails, _trainers[j]);
-                _overallNegativeHistory[_taskPublisher][_trainers[j]] += _taskId * iterateMappingNegative(_taskDetails, _trainers[j]);
+                _overallPositiveHistory[_taskPublisher][_trainers[j]] += (_taskId+1) * iterateMappingPositive(_taskDetails, _trainers[j]);
+                _overallNegativeHistory[_taskPublisher][_trainers[j]] += (_taskId+1) * iterateMappingNegative(_taskDetails, _trainers[j]);
             }
         }
     }
     // View function to return both arrays
-    function getReputationArrays() public view returns (uint256[] memory, uint256[] memory) {
-        return (obj, subj);
+    function getReputationArrays() public view returns (uint256[] memory, uint256[] memory, address[] memory) {
+        return (obj, subj,workers);
     }
 
 }
