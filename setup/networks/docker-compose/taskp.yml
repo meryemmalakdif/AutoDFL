@@ -15,7 +15,6 @@ services:
       - TRAINERS=$TRAINERS
       - PRIVATEKEY=$PRIVATEKEY
     volumes:
-      - '../../../federated_learning/regular_user/mimi.txt:/root/mimi.txt' 
       - '../../../federated_learning/regular_user/data.json:/root/data.json' 
 
       #- ../../build/contracts/$ABI.json:/root/abi.json
@@ -25,7 +24,7 @@ services:
       - ../../../artifacts-zk/contracts/Oracle-contracts/APIconsumer.sol/APIConsumer.json:/root/abi_oracle.json
 
 
-      - ../../../artifacts-zk/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+      - ../../../artifacts-zk/contracts/system-contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
 
     extra_hosts:
       - "host.docker.internal:host-gateway"

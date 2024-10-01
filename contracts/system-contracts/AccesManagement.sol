@@ -9,8 +9,8 @@ contract AccesManagement {
     mapping(address => bool) public adminExist;
  
 
-    address[] public taskPublishers;
-    address[] public trainers;    
+    address[] public _taskPublishers;
+    address[] public _trainers;    
 
     address [] private oracleAdresses; 
     mapping (address => bool) private oracleExist ; 
@@ -48,9 +48,9 @@ contract AccesManagement {
     
     function isTrainer(address _addr) public view returns  (bool){
         bool found = false;
-        if (trainers.length > 0) {
-            for (uint i = 0; i < trainers.length; i++) {
-                if (trainers[i] == _addr) {
+        if (_trainers.length > 0) {
+            for (uint i = 0; i < _trainers.length; i++) {
+                if (_trainers[i] == _addr) {
                     found = true;
                     break;
                 }
@@ -62,9 +62,9 @@ contract AccesManagement {
 
     function isTaskPublisher(address _addr) public view returns  (bool){
         bool found = false;
-        if (taskPublishers.length > 0) {
-            for (uint i = 0; i < taskPublishers.length; i++) {
-                if (taskPublishers[i] == _addr) {
+        if (_taskPublishers.length > 0) {
+            for (uint i = 0; i < _taskPublishers.length; i++) {
+                if (_taskPublishers[i] == _addr) {
                     found = true;
                     break;
                 }

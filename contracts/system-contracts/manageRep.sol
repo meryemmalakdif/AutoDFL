@@ -67,8 +67,13 @@ contract ManageReputation {
         return _result;
     }
 
+        uint256[] public obj;
+        uint256[] public subj;
+        
+
     // Reputation updates occur at the end of each timeslot, which is composed of multiple training rounds
     function updateReputation(uint _taskId, uint _startingRound, uint _finishingRound, address[] memory _trainers, uint256[] memory _scores, uint256[] memory totalRounds) public {
+
         uint historical = 0;
         BusinessLogic.Task memory _taskDetails = taskContractInstance.getTaskById(_taskId);
         address _taskPublisher = _taskDetails.publisher;
@@ -79,7 +84,7 @@ contract ManageReputation {
         uint256 _weight;
         uint256 _weight_local_rep;
         uint256 _uncertainty_weight;
-        uint256 _subjectiveRep;
+        uint256 _subjectiveRep=0;
         uint256 _goodBehaviourThreshold = 0;
 
         for (uint j = 0; j <= _threshold - 1; j++) {
@@ -118,6 +123,8 @@ contract ManageReputation {
                 // If it is the trainer's first interaction with a publisher, it indicates that the trainer has no existing subjective reputation
                 _localRep = _objectiveRep;
             }
+            obj.push(_objectiveRep);
+            subj.push(_subjectiveRep);
             // get the previous reputation
             _prevRep = taskContractInstance.getReputation(_trainers[j]);
             // The weights assigned during the reputation update are based on the total interactions of the trainer within the system. As the number of interactions increases, it becomes more challenging to raise the trainer's reputation score.
@@ -141,4 +148,9 @@ contract ManageReputation {
             }
         }
     }
+    // View function to return both arrays
+    function getReputationArrays() public view returns (uint256[] memory, uint256[] memory) {
+        return (obj, subj);
+    }
+
 }

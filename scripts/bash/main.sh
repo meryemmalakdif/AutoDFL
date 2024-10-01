@@ -134,7 +134,7 @@ start_trainers_containers(){
     local task=${13}
     echo $task
     local fl_yml="../../setup/networks/docker-compose/fl.yml"  # full path to fl.yml
-    CONTRACT=$contract_address ABI=$abi ABI_FILE=$abi_file CONTRACT_REPUTATION=$contract_address_reputation ABI_REP=$abi_reputation ABI_FILE_REP=$abi_file_reputation CONTRACT_ORACLE=$contract_address_oracle ABI_ORACLE=$abi_oracle ABI_FILE_ORACLE=$abi_file_oracle ADMINS=$admins_number CLIENTS=$trainers TASKPUBLISHERS=1 EVALUATION_NAME=$evaluation_name TASK=$task docker compose -f $fl_yml -p federated_learning up --remove-orphans 
+    CONTRACT=$contract_address ABI=$abi ABI_FILE=$abi_file CONTRACT_REPUTATION=$contract_address_reputation ABI_REP=$abi_reputation ABI_FILE_REP=$abi_file_reputation CONTRACT_ORACLE=$contract_address_oracle ABI_ORACLE=$abi_oracle ABI_FILE_ORACLE=$abi_file_oracle ADMINS=$admins_number CLIENTS=$trainers EVALUATION_NAME=$evaluation_name TASK=$task docker compose -f $fl_yml -p federated_learning up --remove-orphans 
 }
 
 #function to register federated learning trainers into a the BFL system
@@ -192,7 +192,7 @@ function_params[start_bc_containers]="4 4444"
 function_params[connect_peers]="8fdf1946a39b"
 
 # Predefined parameters for function necessary to authorize the oracle operator node
-function_params[authorize_operator]="0xc2E286Dd195B87F29bd6456DaD18f6DcAaE033A1 1 Operator Operator 0x8CA5DAdA4E0646b6594eb538779303cB10809C72"
+function_params[authorize_operator]="0xd0C4E6F63F8286a6A4860Cfbc0272f8E1267EbF8 1 Operator Operator 0x1e92293C8aC5b7957336b480d260cB09610465ba"
 
 
 
@@ -200,9 +200,9 @@ function_params[authorize_operator]="0xc2E286Dd195B87F29bd6456DaD18f6DcAaE033A1 
 # Predefined parameters for functions necessary to set up the FL business logic
 function_params[build_fl_node_image]="" ## run it only once
 function_params[split_data]="mnist 1000 noniid-labeldir 0.5 ../../federated_learning/regular_user/data_manipulation/data/ " ## run it only once to simulate the trainers having their own datasets and that's it 
-function_params[register_trainers]="0xC75F57411183A7294Bb109CF9f3114740d70d4D1 BusinessLogic businessLogic 5 1"
-function_params[start_task_publisher_containers]="0xC75F57411183A7294Bb109CF9f3114740d70d4D1 1 BusinessLogic businessLogic 12 5"
-function_params[start_trainers_containers]="0xC75F57411183A7294Bb109CF9f3114740d70d4D1 BusinessLogic businessLogic 0xf20c4bEbd07368578Db26f814b9934f22F9aa8E9 ManageReputation manageRep  0x4d03f9ea7806BFe9BB32cc3b0a47A3Ece2a0FFaE APIConsumer APIconsumer 5 1 accuracy 0"
+function_params[register_trainers]="0xBE6Fc9B483329b65e7be1747a7B12193820e8654 BusinessLogic businessLogic 5 1"
+function_params[start_task_publisher_containers]="0xBE6Fc9B483329b65e7be1747a7B12193820e8654 1 BusinessLogic businessLogic 12 5"
+function_params[start_trainers_containers]="0xBE6Fc9B483329b65e7be1747a7B12193820e8654 BusinessLogic businessLogic 0xf46cEe5958cd364Cb38b95796C409fbc5a7a343d ManageReputation manageRep  0xb40C3e52B6D7ed9883F18c1e884c50600A681674 APIConsumer APIconsumer 5 1 accuracy 0"
 
 
 # Main logic to dispatch functions based on command-line arguments

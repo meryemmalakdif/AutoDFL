@@ -4,6 +4,7 @@ import time
 
 # Get the path to the FederatedLearning directory relative to my_script.py
 from FederatedLearning import smart_contract_functions
+from FederatedLearning import task_requester
 
 
 
@@ -56,18 +57,33 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
 
   # Get access to reputation contract -deployed on layer 2- functions
   contract_reputation = smart_contract_functions.Contract_zksync(provider, abi_rep, contract_rep, passphrase)
-  
+  i=0
+  time.sleep(10)
   while True:
-    time.sleep(10)
-    # get the task details to access the model cid
+    current_task = contract_task.get_task_byId(task)
+    if len(current_task[9])>0:
+      break  
+
+  task_requester_instance = task_requester.TaskRequester(ipfs)
+  selected_trainers = task_requester_instance.selectTrainers(current_task[9],current_task[8])  
+  time.sleep(10)
+  contract_task.set_task_trainers_round(task,i,selected_trainers)
+
+
+  while True:
+    # get the task details
     current_task = contract_task.get_task_byId(task)
     if current_task[10] == "evaluation":
       break  
-  i=0
-  while True:
 
-    initial_trainers , local_updates = contract_task.get_updates_task(task,i)
+  while True:
     
+    while True:
+      initial_trainers , local_updates = contract_task.get_updates_task(task,i)
+      if len(initial_trainers)>0:
+        break
+
+
 
     
     local_hash = "-".join(local_updates)
@@ -78,8 +94,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
     else:
       global_model_weights=""
 
-    with open('performance.txt', 'a') as file:
-      file.write(f" {local_hash} \n") 
+
     tx, tx_receipt = contract_layer1.evaluation_admin(local_hash, trainers, current_task[1] , global_model_weights , evaluation, str(i))
     sc = contract_layer1.scores_admin()  
 
@@ -175,19 +190,20 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
       rep_tx, rep_tx_receipt = contract_reputation.update_reputation(task, i-3 , i+1, pre_rep_trainers ,  pre_rep , counts )
 
       time.sleep(10)
+
+      obj , subj = contract_reputation.getReputationArrays()
+      with open('performance.txt', 'a') as file:
+        file.write(f" {obj} \n")   
+        file.write(f" {subj} \n")       
+    
       all_reputation = contract_task.get_all_reputation()
 
       with open('performance.txt', 'a') as file:
         file.write(f" {all_reputation} \n") 
 
       if (i+1) != current_task[7]:  
+        contract_task.set_task_trainers_round(task,i+1,selected_trainers)
 
-        contract_task.update_task_state(task,"selection")
-        while True:
-          # get the task details to access the model cid
-          current_task = contract_task.get_task_byId(task)
-          if current_task[10] == "selection":
-            break
 
       else:
         contract_task.update_task_state(task,"done")
@@ -203,7 +219,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
 
       contract_task.update_task_state(task,"training")
       while True:
-        # get the task details to access the model cid
+        # get the task details
         current_task = contract_task.get_task_byId(task)
         if current_task[10] == "training":
           break
@@ -218,7 +234,6 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
         break
 
 
-    current_time = int(round(time.time() * 1000))
     
 
 

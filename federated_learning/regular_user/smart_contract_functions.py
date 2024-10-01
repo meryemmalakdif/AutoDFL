@@ -80,7 +80,6 @@ def get_web3(provider, abi_file, contract_address):
   # unlocks the specified Ethereum account for 600 seconds (10 minutes) using the provided passphrase
   # using the passphrase
   # web3.geth.personal.unlock_account(account, passphrase, 600)
-  print("c du rai ",contract_address)
   contract = web3.eth.contract(address=contract_address, abi=abi)
   #defaultOpts = { 'from': account.address }
 
@@ -101,17 +100,12 @@ def get_contract_from_zksync(provider, abi_file, contract_address):
 
 
 def get_abi(filename):
+  print("ya raby ",filename)
   with open(filename) as file:
     contract_json = json.load(file)
   return contract_json['abi']
 
 
-class RoundPhase(Enum):
-  STOPPED = 0
-  WAITING_FOR_UPDATES = 1
-  WAITING_FOR_SCORES = 2
-  WAITING_FOR_AGGREGATIONS = 3
-  WAITING_FOR_TERMINATION = 4
 
 
 class ContractLayer1():
@@ -159,30 +153,6 @@ class Contract():
     self.contract = contract
     self.abi = abi
 
-  def get_all_tasks(self):
-    return self.contract.functions.getAllTasks().call()
-
-  def publish_task(self, modelCid, infoCid,roundsNumber,trainersNumber):
-    # Load your private key
-    print(self.private_key)
-    account = self.web3.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.publishTask(modelCid, infoCid, roundsNumber,trainersNumber).build_transaction({
-        'from': account.address,
-        'nonce': self.web3.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
-
-
-
-  async def handle_event(event):
-    print("event printed ",event)
-  '''
-  here basically we can call all the functions that we ve defined in the smart contracts
-  self.contract.functions.function_name().call(self.default_opts) => doesn t modify BC state
-  self.contract.functions.function_name().transact(self.default_opts) => changes BC state
-  '''
-  
   def evaluation_admin(self, local_hash, trainers, model_hash, global_weights_hash,  evaluation, round):
     # Load your private key
     account = self.web3.eth.account.from_key(self.private_key)
@@ -203,7 +173,6 @@ class Contract():
     })
     return tx , self.wait_tx(tx,self.private_key)
   
-
   def trigger_aggregation_admin(self, local_models, scores, model_hash):
     # Load your private key
     account = self.web3.eth.account.from_key(self.private_key)
@@ -224,8 +193,6 @@ class Contract():
   def pre_rep_result_trainers(self):
     return self.contract.functions.getTrainers().call()
 
-
-
   def behaviour_trainers(self):
     return self.contract.functions.getBehaviour().call()
     
@@ -241,12 +208,6 @@ class Contract():
         'nonce': self.web3.eth.get_transaction_count(account.address)
     })
     return tx , self.wait_tx(tx,self.private_key)
-
-
-  # This function essentially provides logging for the start and end of a transaction,
-  # along with relevant details such as the transaction hash, gas used, and timestamps.
-  # It's useful for tracking and monitoring transaction execution in a Python application
-  # interacting with Ethereum through the web3.py library
 
   def unlock_account(self):
     self.web3.geth.personal.unlock_account(self.account, self.passphrase, 600)
@@ -273,7 +234,6 @@ class Contract_zksync():
     self.private_key = private_key
     self.contract_address = contract_address
     self.abi = abi
-
 
   def publish_task(self, modelCid, infoCid,roundsNumber,trainersNumber):
     # Load your private key
@@ -331,10 +291,6 @@ class Contract_zksync():
   def scores_admin(self):
     return self.contract.functions.getVolume().call()
 
-
-  def behaviour_trainers(self):
-    return self.contract.functions.getBehaviour().call()
-    
   
   def set_task_trainers(self,taskId,trainers):
     # Load your private key
@@ -357,9 +313,6 @@ class Contract_zksync():
     return tx , self.wait_tx(tx,self.private_key)
 
 
-  def is_trainer_for_task(self,taskId,address):
-    return self.contract.functions.isTrainerForTask(taskId,address).call()
-
   def get_trainers_task(self,taskId):
     return self.contract.functions.getTrainersForTask(taskId).call()
     
@@ -371,52 +324,9 @@ class Contract_zksync():
     return self.contract.functions.getUpdatesForAggregationTask(task,round).call()
    
 
-
-
-  def requestVolume(self, local_hash, model_hash, global_weights_hash,  evaluation, round):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.requestVolumeData(local_hash, model_hash, global_weights_hash,  evaluation , round).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
-
-
-  
-  def evaluation_admin(self, local_hash, trainers, model_hash, global_weights_hash,  evaluation, round):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.requestVolumeData(local_hash, trainers, model_hash, global_weights_hash,  evaluation , round).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
-
-
-  def triggerEvaluation(self, task, round, evaluation):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.triggerEvaluation( task, round, evaluation ).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)+1
-    })
-    return tx , self.wait_tx(tx,self.private_key)
-
-   
-
-
-
   def get_trainers_task_round(self,task,round):
     return self.contract.functions.getTrainersForTaskRound(task,round).call()
   
-  def get_total_participation_level(self,addr):
-    return self.contract.functions.totalParticipationLevel(addr).call()
-             
-
   def upload_scores(self, task, round, scores):
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
@@ -428,14 +338,7 @@ class Contract_zksync():
     return tx , self.wait_tx(tx,self.private_key)
   
 
-  def upload_model(self,modelUpdate,task,task_trainers,round):   
-      # Encode the update data according to your contract's ABI
-      # Encode the struct parameters
-      # print(self.web3.eth)
-      # encoded_data =  self.web3.eth.abi.encode_abi(
-      #   ["uint", "uint", "uint", "string"],
-      #   [modelUpdate["trainingAccuracy"], modelUpdate["testingAccuracy"], modelUpdate["trainingDataPoints"], modelUpdate["weights"]]
-      #   )   
+  def upload_model(self,modelUpdate,task,task_trainers,round):    
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
     checksum_address = self.zksync_provider.to_checksum_address(account.address)
@@ -446,53 +349,12 @@ class Contract_zksync():
     })
     return tx , self.wait_tx(tx,self.private_key)
       
-  def get_round(self):
-    return self.contract.functions.round().call()
-
-  def get_round_phase(self):
-    return RoundPhase(self.contract.functions.roundPhase().call())
-
- 
-
   def get_all_tasks(self):
     return self.contract.functions.getAllTasks().call()
 
   def get_task_byId(self, id):
     return self.contract.functions.getTaskById(id).call()
-  
-  def start_round(self, *args):
-    self.unlock_account()
-    tx = self.contract.functions.startRound(*args).transact()
-    return tx, self.__wait_tx(tx)
-  
 
-
-
-
-
-  # def get_submissions_for_aggregation(self):
-  #   [round, trainers, submissions] = self.contract.functions.getUpdatesForAggregation().call(self.default_opts)
-  #   return (round, trainers, submissions)
-  def submit_aggregation(self, weights_id,task,task_aggregators,round):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.submitAggregation(weights_id,task,task_aggregators,round).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
-  
-
-  def setPosNeg(self, taskId,addr,round):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.setPosNeg(taskId,addr,round).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
 
   def deposit(self, amount):
     # Load your private key
@@ -519,92 +381,31 @@ class Contract_zksync():
   def get_balance(self,addr):
     return self.contract.functions.getBalance(addr).call()
   
-  def get_state_task_round(self,task):
-    return self.contract.functions.getTaskState(task).call()
-    
-  def get_number(self):
-    return self.contract.functions.getNUmber().call()
-    
 
   def get_scores_task_round(self,task,round):
     return self.contract.functions.getRoundScores(task,round).call()
   
 
-  def get_aggregations_task_round(self,task,round):
-    return self.contract.functions.aggregationsTask(task,round).call()
-  
   def get_all_reputation(self):
     return self.contract.functions.getAllReputations().call()
 
-  def getPosNeg(self,taskId,addr,round):
-    return self.contract.functions.getPosNeg(taskId,addr,round).call()
-  
+  def getReputationArrays(self):
+    return self.contract.functions.getReputationArrays().call()
 
-  def get_eh(self,_taskPublisher,_trainer):
-    return self.contract.functions.ehPositive(_taskPublisher,_trainer).call()
-  
 
-  def get_greeting(self): 
-    return self.contract.functions.testConcatenate().call()
-  
 
-  
-  
-  def set_greeting(self):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.setGreeting('Hello, zkSync!').build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
-
-  def measureTrainersPerformance(self, task, startingRound, finishingRound, trainer, method):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.measurePerformance(task, startingRound, finishingRound, trainer, method).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)    
-    
-  
-  def detect_interaction(self, score , scores, method):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.detect_interaction(score , scores , method).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)    
-     
 
   def update_reputation(self, taskId, startingRound , finishingRound, addrs ,  scores , completeness):
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
     # Build and send the transaction
-    tx = self.contract.functions.updateRepuation(taskId,startingRound,finishingRound,addrs , scores , completeness).build_transaction({
+    tx = self.contract.functions.updateReputation(taskId,startingRound,finishingRound,addrs , scores , completeness).build_transaction({
         'from': account.address,
         'nonce': self.zksync_provider.eth.get_transaction_count(account.address)+1
     })
     return tx , self.wait_tx(tx,self.private_key)    
-     
-  def hihi(self, taskId, startingRound , finishingRound, addr , method ):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.hihi(taskId,startingRound,finishingRound,addr,method).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)+1
-    })
-    return tx , self.wait_tx(tx,self.private_key)    
-     
 
 
-  
   def set_business_logic(self, addr):
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
@@ -616,7 +417,6 @@ class Contract_zksync():
     return tx , self.wait_tx(tx,self.private_key)
 
 
-
   def authorize(self, senders):
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
@@ -626,12 +426,6 @@ class Contract_zksync():
         'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
     })
     return tx , self.wait_tx(tx,self.private_key)
-
-
-
-
-
-
 
 
   def wait_tx(self, tx , private_key):

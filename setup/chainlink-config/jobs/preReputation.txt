@@ -4,7 +4,7 @@ name = "preReputation"
 externalJobID = "332cd912-2a43-4ac7-a2ac-2514c835dd19"
 forwardingAllowed = false
 maxTaskDuration = "0s"
-contractAddress = "0xf20c4bEbd07368578Db26f814b9934f22F9aa8E9"
+contractAddress = "0xd0C4E6F63F8286a6A4860Cfbc0272f8E1267EbF8"
 evmChainID = "9"
 minIncomingConfirmations = 0
 minContractPaymentLinkJuels = "0"
@@ -22,7 +22,7 @@ observationSource = """
     encode_tx    [type=ethabiencode
                   abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
                   data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"]
-    submit_tx    [type=ethtx to="0xf20c4bEbd07368578Db26f814b9934f22F9aa8E9" data="$(encode_tx)"]
+    submit_tx    [type=ethtx to="0xd0C4E6F63F8286a6A4860Cfbc0272f8E1267EbF8" data="$(encode_tx)"]
 
     decode_log -> decode_cbor -> fetch -> parse -> parse_two -> encode_data -> encode_tx -> submit_tx
 """

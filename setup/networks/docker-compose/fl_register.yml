@@ -16,7 +16,7 @@ services:
     volumes:
     
       - '../../../federated_learning/regular_user/data_manipulation/data:/root/dataset'
-      - ../../../artifacts-zk/contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
+      - ../../../artifacts-zk/contracts/system-contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
 
 
     extra_hosts:

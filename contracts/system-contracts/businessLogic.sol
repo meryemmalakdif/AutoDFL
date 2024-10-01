@@ -3,7 +3,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "./AccesManagement.sol";
 
-contract BusinessLogic is AccesManagement {
+contract BusinessLogic {
 
     struct Update {
         uint trainingAccuracy;
@@ -46,6 +46,8 @@ contract BusinessLogic is AccesManagement {
 
     // Registration Details
     mapping(address => bool) public registeredTaskPublishers;
+    address[] public taskPublishers;
+    address[] public trainers;    
     mapping(address => bool) public registeredTrainers;
 
     // here the rounds array elements corresponds to the end/finishing round before measuring the performance and updating the reputation
@@ -101,18 +103,18 @@ contract BusinessLogic is AccesManagement {
         );
     }
 
-    function registerTrainer() public {
-        require(!registeredTrainers[msg.sender], "Trainer already registered.");
-
-        trainers.push(msg.sender);
-        registeredTrainers[msg.sender] = true;
-
-        Trainer memory newTrainer;
-        newTrainer._trainerAddr = msg.sender;
-        newTrainer._reputation = 500000000000;
-
-        accountsReputation.push(newTrainer);
+  function registerTrainer() public {
+    if (registeredTrainers[msg.sender] == false) {
+      trainers.push(msg.sender);
+      registeredTrainers[msg.sender] = true;
+      Trainer memory newTrainer;
+      newTrainer._trainerAddr = msg.sender;
+      newTrainer._reputation = 500000000000;
+      Trainer[] storage _accountsRep = accountsReputation ;
+      _accountsRep.push(newTrainer);
     }
+  }
+
 
     // registers a trainer to a specific task
     function registerTrainerTask(uint _taskId) public {
@@ -123,8 +125,11 @@ contract BusinessLogic is AccesManagement {
         task.registeredTrainers.push(msg.sender);
     }
 
+   
+
+
     // assigns a trainer to a specific task
-    function setTaskTrainers(uint _taskId, address[] memory taskTrainers) public onlyOwner {
+    function setTaskTrainers(uint _taskId, address[] memory taskTrainers) public {
         require(_taskId + 1 <= tasks.length, "Task does not exist");
         Task storage task = tasks[_taskId];
         require(task.publisher == msg.sender, "Only the publisher can select trainers");
@@ -162,7 +167,7 @@ contract BusinessLogic is AccesManagement {
         address[] memory _roundChosenTrainers = new address[](tasks[_taskId].requiredTrainers);
         uint _index = 0;
         for (uint i = 0; i < tasks[_taskId].trainers.length; i++) {
-            if (isInIntArray(taskSelectedTrainers[_taskId][tasks[_taskId].trainers[i]],_round + 4) == true) {
+            if (isInIntArray(taskSelectedTrainers[_taskId][tasks[_taskId].trainers[i]],_round) == true) {
                 _roundChosenTrainers[_index] = tasks[_taskId].trainers[i];
                 _index++;
             }
@@ -285,7 +290,7 @@ contract BusinessLogic is AccesManagement {
         }
     }
 
-    function submitScore(uint _task,uint _round,Score[] memory _scores) public onlyOwner {
+    function submitScore(uint _task,uint _round,Score[] memory _scores) public  {
         for (uint i = 0; i < _scores.length; i++) {
             scores[_task][_round].push(_scores[i]);
         }
@@ -305,7 +310,7 @@ contract BusinessLogic is AccesManagement {
         return trainers;
     }
 
-    function getUpdatesForAggregationTask(uint taskId,uint _round) public onlyOwner returns (address[] memory, string[] memory) {
+    function getUpdatesForAggregationTask(uint taskId,uint _round) public  returns (address[] memory, string[] memory) {
         address[] memory _roundTrainers = getTrainersForTaskRound(taskId,_round);
         string[] memory taskUpdates = new string[](_roundTrainers.length);
         for (uint i = 0; i < _roundTrainers.length; i++) {
@@ -314,13 +319,13 @@ contract BusinessLogic is AccesManagement {
         return (_roundTrainers, taskUpdates);
     }
 
-    function UpdateGlobalModelWeights(uint _taskId,string memory globalModelWeightsCID,string memory _state) public onlyOwner {
+    function UpdateGlobalModelWeights(uint _taskId,string memory globalModelWeightsCID,string memory _state) public  {
         require(_taskId + 1 <= tasks.length, "Task does not exist");
         tasks[_taskId].globalModelWeightsCID = globalModelWeightsCID;
         tasks[_taskId].currentRound++;
     }
 
-    function updateTaskState(uint _taskId, string memory _state) public onlyOwner {
+    function updateTaskState(uint _taskId, string memory _state) public  {
         require(_taskId + 1 <= tasks.length, "Task does not exist");
         Task storage task = tasks[_taskId];
         task.state = _state;
@@ -346,7 +351,7 @@ contract BusinessLogic is AccesManagement {
     function isInIntArray(uint[] memory arr,uint look) public view returns (bool) {
         bool found = false;
         for (uint i = 0; i < arr.length; i++) {
-            if (arr[i] == look) {
+            if (arr[i] > look) {
                 found = true;
                 break;
             }
@@ -354,7 +359,7 @@ contract BusinessLogic is AccesManagement {
         return found;
     }
 
-    function setReputation(address _addr, uint256 _newRep) public onlyOwner {
+    function setReputation(address _addr, uint256 _newRep) public  {
         for (uint i = 0; i < accountsReputation.length; i++) {
             if (accountsReputation[i]._trainerAddr == _addr) {
                 accountsReputation[i]._reputation = _newRep;
@@ -363,7 +368,7 @@ contract BusinessLogic is AccesManagement {
         }
     }
 
-    function getReputation(address _addr) public onlyOwner returns (uint256) {
+    function getReputation(address _addr) public  returns (uint256) {
         uint256 _rep;
         for (uint i = 0; i < accountsReputation.length; i++) {
             if (accountsReputation[i]._trainerAddr == _addr) {
@@ -374,7 +379,7 @@ contract BusinessLogic is AccesManagement {
         return _rep;
     }
 
-    function getAllReputations() public onlyOwner view returns (Trainer[] memory) {
+    function getAllReputations() public  view returns (Trainer[] memory) {
         return accountsReputation;
     }
 

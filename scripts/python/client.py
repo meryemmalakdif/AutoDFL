@@ -51,9 +51,8 @@ def main(provider, abi, ipfs, account, passphrase, contract, train, test, learni
       raise ValueError("Invalid epochs number provided")
   weights_loader = weights_loaders.IpfsWeightsLoader(ipfs)
   model_loader = ModelLoaders.IpfsModelLoader(contract, weights_loader, ipfs_api=ipfs)
-  
-  # register to the BFL system
-  contract_task.register_as_trainer()
+  contract_task.register_as_trainer()  
+
   # register to the task
   tx, tx_receipt = contract_task.register_as_trainer_task(task)
   # wait some time before checking if the task's current phase is training
@@ -88,16 +87,22 @@ def main(provider, abi, ipfs, account, passphrase, contract, train, test, learni
       validationAccuracy = utilities.float_to_int(result['val_acc'])
       update = {
         "trainingAccuracy": trainingAccuracy,
-        "testingAccuracy": validationAccuracy,
         "trainingDataPoints": len(train_loader.dataset),
-        "weights": model_weights_ipfs_hash,
-        "timestamp": int(round(time.time() * 1000)),
+        "weights": model_weights_ipfs_hash
         }
-  
+      with open('mimi.txt', 'a') as file:
+        file.write(f" {model_weights_ipfs_hash}  \n") 
+      
       transaction, transaction_receipt = contract_task.upload_model(update,task,chosen_trainers,i)
       i+=1
       while True and i!=current_task[7] :
         time.sleep(10)
+        initial_trainers , local_updates = contract_task.get_updates_task(task,i)
+
+        with open('mimi.txt', 'a') as file:
+          file.write(f" {initial_trainers}  {local_updates} \n") 
+        
+
         # get the task details to access the model cid
         current_task = contract_task.get_task_byId(task)
         if current_task[10] == "training":
