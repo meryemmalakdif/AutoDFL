@@ -10,11 +10,8 @@ def generate_data(n):
     for _ in range(n):
         _taskId = random.randint(1, 1000)  # Generate a random task ID
         _taskPublisher = generate_random_address()  # Generate a random task publisher address
-        _startingRound = random.randint(0, 50)  # Generate a random starting round
-        _finishingRound = random.randint(_startingRound + 1, 100)  # Generate a finishing round greater than starting round
-
         # Generate arrays of random trainers, scores, and total rounds
-        length = random.randint(1, 10)  # Random length for the arrays
+        length = random.randint(3, 4)  # Random length for the arrays
         _trainers = [generate_random_address() for _ in range(length)]
         _scores = [random.randint(0, 100) for _ in range(length)]
         totalRounds = [random.randint(1, 10) for _ in range(length)]
@@ -22,8 +19,6 @@ def generate_data(n):
         item = {
             "taskId": _taskId,
             "taskPublisher": _taskPublisher,
-            "startingRound": _startingRound,
-            "finishingRound": _finishingRound,
             "trainers": _trainers,
             "scores": _scores,
             "totalRounds": totalRounds
@@ -37,7 +32,7 @@ def main():
     generated_data = generate_data(n)
 
     # Write to JSON file
-    with open('objectiveReputationData.json.json', 'w') as json_file:
+    with open('objectiveReputationData.json', 'w') as json_file:
         json.dump(generated_data, json_file, indent=4)
 
 if __name__ == "__main__":

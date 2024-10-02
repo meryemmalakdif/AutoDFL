@@ -41,7 +41,7 @@ class StoreWorkload extends WorkloadModuleBase {
 
         
         let workload = [];
-        let roundIndexes = [0,500,1300,2300];
+        let roundIndexes = [0,1000,2000,3000];
         // let roundIndexes = [0,200,400,600,1100,1600,2100];
 
         if(!isInit){
@@ -55,7 +55,6 @@ class StoreWorkload extends WorkloadModuleBase {
  
       }
 
-      console.log("god ",myArray[0]);
 
 
 
@@ -64,8 +63,6 @@ class StoreWorkload extends WorkloadModuleBase {
             this.txIndex++; 
             let taskId = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].taskId ; 
             let taskPublisher = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].taskPublisher ; 
-            let startingRound = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].startingRound ; 
-            let finishingRound = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].finishingRound ; 
             let trainers = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].trainers ; 
             let scores= myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].scores ; 
             let totalRounds = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].totalRounds ; 
@@ -73,10 +70,10 @@ class StoreWorkload extends WorkloadModuleBase {
             let args = {
                 contract :this.roundArguments.contract,
                 verb: 'calculateObjectiveReputation',
-                args: [taskId, taskPublisher,startingRound,finishingRound,trainers,scores,totalRounds],
+                args: [taskId, taskPublisher,trainers,scores,totalRounds],
                 readOnly: false,
                 // nonce: currentNonce, // Use the incremented nonce
-                gasPrice: '200000' // Set a suitable gas pr  1000000000
+                // gasPrice: '20000000000' // Set a suitable gas pr  1000000000
             }
             // currentNonce++;
 

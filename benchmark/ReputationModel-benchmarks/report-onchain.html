@@ -153,13 +153,13 @@
                     </tr>
 
                     <tr>
-                         <td>warm-up (ignore results)</td> <td>298</td> <td>202</td> <td>79.6</td> <td>2.27</td> <td>1.11</td> <td>1.73</td> <td>60.7</td>
+                         <td>warm-up (ignore results)</td> <td>1000</td> <td>0</td> <td>308.9</td> <td>5.63</td> <td>1.28</td> <td>3.33</td> <td>114.8</td>
                     </tr>
                     <tr>
-                         <td>second round</td> <td>493</td> <td>307</td> <td>137.2</td> <td>6.40</td> <td>1.50</td> <td>3.91</td> <td>67.2</td>
+                         <td>second round</td> <td>1000</td> <td>0</td> <td>301.0</td> <td>5.73</td> <td>1.55</td> <td>3.48</td> <td>112.6</td>
                     </tr>
                     <tr>
-                         <td>second round</td> <td>573</td> <td>427</td> <td>197.4</td> <td>10.07</td> <td>1.71</td> <td>5.83</td> <td>67.2</td>
+                         <td>second round</td> <td>1000</td> <td>0</td> <td>327.9</td> <td>6.11</td> <td>1.82</td> <td>3.82</td> <td>112.1</td>
                     </tr>
                 </table>
             </div>
@@ -169,8 +169,8 @@
                 <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
   type: maximum-rate
   opts:
-    tps: 100
-    step: 5
+    tps: 370
+    step: 20
     sampleInterval: 10
     includeFailed: true
 </pre>
@@ -180,7 +180,7 @@
                                      <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
                                 </tr>
                                 <tr>
-                                     <td>warm-up (ignore results)</td> <td>298</td> <td>202</td> <td>79.6</td> <td>2.27</td> <td>1.11</td> <td>1.73</td> <td>60.7</td>
+                                     <td>warm-up (ignore results)</td> <td>1000</td> <td>0</td> <td>308.9</td> <td>5.63</td> <td>1.28</td> <td>3.33</td> <td>114.8</td>
                                 </tr>
                             </table>
                         <h3>Resource utilization for warm-up (ignore results)</h3>
@@ -192,8 +192,8 @@
                 <pre style="overflow: visible;white-space: pre-wrap;max-height:100%;">rateControl:
   type: maximum-rate
   opts:
-    tps: 200
-    step: 5
+    tps: 370
+    step: 20
     sampleInterval: 10
     includeFailed: true
 </pre>
@@ -203,7 +203,7 @@
                                      <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
                                 </tr>
                                 <tr>
-                                     <td>second round</td> <td>493</td> <td>307</td> <td>137.2</td> <td>6.40</td> <td>1.50</td> <td>3.91</td> <td>67.2</td>
+                                     <td>second round</td> <td>1000</td> <td>0</td> <td>301.0</td> <td>5.73</td> <td>1.55</td> <td>3.48</td> <td>112.6</td>
                                 </tr>
                             </table>
                         <h3>Resource utilization for second round</h3>
@@ -213,7 +213,7 @@
                                      <th>Name</th> <th>Succ</th> <th>Fail</th> <th>Send Rate (TPS)</th> <th>Max Latency (s)</th> <th>Min Latency (s)</th> <th>Avg Latency (s)</th> <th>Throughput (TPS)</th>
                                 </tr>
                                 <tr>
-                                     <td>second round</td> <td>573</td> <td>427</td> <td>197.4</td> <td>10.07</td> <td>1.71</td> <td>5.83</td> <td>67.2</td>
+                                     <td>second round</td> <td>1000</td> <td>0</td> <td>327.9</td> <td>6.11</td> <td>1.82</td> <td>3.82</td> <td>112.1</td>
                                 </tr>
                             </table>
                         <h3>Resource utilization for second round</h3>
@@ -229,12 +229,12 @@ workers:
   number: 1
 rounds:
   - label: warm-up (ignore results)
-    txNumber: 500
+    txNumber: 1000
     rateControl:
       type: maximum-rate
       opts:
-        tps: 100
-        step: 5
+        tps: 370
+        step: 20
         sampleInterval: 10
         includeFailed: true
     workload:
@@ -243,12 +243,12 @@ rounds:
         contract: ManageReputation
         num: 1
   - label: second round
-    txNumber: 800
+    txNumber: 1000
     rateControl:
       type: maximum-rate
       opts:
-        tps: 200
-        step: 5
+        tps: 370
+        step: 20
         sampleInterval: 10
         includeFailed: true
     workload:
@@ -261,8 +261,8 @@ rounds:
     rateControl:
       type: maximum-rate
       opts:
-        tps: 300
-        step: 5
+        tps: 370
+        step: 20
         sampleInterval: 10
         includeFailed: true
     workload:
