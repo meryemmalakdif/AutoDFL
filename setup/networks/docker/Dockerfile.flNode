@@ -33,8 +33,6 @@ COPY /scripts/python/admin_apiConsumer.py /root/admin_apiConsumer.py
 COPY /scripts/bash/admin_apiConsumer.sh  /root/admin_apiConsumer.sh
 COPY /scripts/python/task_publisher.py /root/task_publisher.py
 COPY /scripts/bash/task_publisher.sh  /root/task_publisher.sh
-COPY /scripts/python/task_publisher_round.py /root/task_publisher_round.py
-COPY /scripts/bash/task_publisher_round.sh  /root/task_publisher_round.sh
 COPY /setup/zkSync-local-node-L2/rich-wallets.json  /root/rich-wallets.json
 COPY federated_learning/regular_user /root/FederatedLearning
 
@@ -46,7 +44,6 @@ RUN chmod +x /root/admin.sh
 RUN chmod +x /root/admin_authorize.sh
 RUN chmod +x /root/admin_apiConsumer.sh
 RUN chmod +x /root/task_publisher.sh
-RUN chmod +x /root/task_publisher_round.sh
 
 
 

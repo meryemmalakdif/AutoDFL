@@ -3,60 +3,449 @@
         "blockchain": "ethereum"
     },
     "ethereum": {
-        "url": "ws://172.17.0.1:8546", 
-        "contractDeployerAddress": "0xf17f52151EbEF6C7334FAD080c5704D77216b732",
-        "contractDeployerAddressPrivateKey": "0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f",
-        "fromAddress": "0xf17f52151EbEF6C7334FAD080c5704D77216b732",
-        "fromAddressPrivateKey": "0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f",
+        "txFeeCap": 6.00,
+        "url": "ws://172.16.240.3:8546",
+        "contractDeployerAddress": "0xf000e2ecAe2FC0b3b5d56CA2Af14a0FD4C13B308",
+        "contractDeployerAddressPrivateKey": "0xb7775c20fdcff599d038969d653cd6c29456f2efb1823933e6cdfad35b47f5d3",
+        "contractDeployerAddressPassword": "7sh7h00xgMN4AYy",
+        "fromAddress":"0x01CD6F9962d2e6451143D20eEB93C0ECCAC241c9",
+        "fromAddressPrivateKey":"0xb383e58579c46debcb4fb1649cea60b2c2a0f55df445068ea9dee7638f500e22",
+        "fromAddressPassword": "d1WUuJPCpTfSSvo",
         "transactionConfirmationBlocks": 1,
         "chainId": 4444,
         "contracts": {
-            "ManageReputation": {
-                "address": "0xA9F8FeF0B3DF9159F1443427dAa79210fCEB009C",
+            "ManageReputation":{
+              "address":"0x8Af2CE255797a46Ee504c81Ea77Ba9C5e171baE4",
                 "estimateGas": true,
+                "gas": {
+                  "calculateObjectiveReputation": 203960       
+                },  
                 "abi": [
                     {
-                        "constant": false,
-                        "inputs": [
+                      "inputs": [],
+                      "stateMutability": "nonpayable",
+                      "type": "constructor"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "address",
+                          "name": "",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "",
+                          "type": "address"
+                        }
+                      ],
+                      "name": "_overallNegativeHistory",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "address",
+                          "name": "",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "",
+                          "type": "address"
+                        }
+                      ],
+                      "name": "_overallPositiveHistory",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "_roundNegativePerformance",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "_roundPositivePerformance",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "_totalRounds",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "_taskId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "_taskPublisher",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "_startingRound",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "_finishingRound",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address[]",
+                          "name": "_trainers",
+                          "type": "address[]"
+                        },
+                        {
+                          "internalType": "uint256[]",
+                          "name": "_scores",
+                          "type": "uint256[]"
+                        },
+                        {
+                          "internalType": "uint256[]",
+                          "name": "totalRounds",
+                          "type": "uint256[]"
+                        }
+                      ],
+                      "name": "calculateObjectiveReputation",
+                      "outputs": [
+                        {
+                          "internalType": "uint256[]",
+                          "name": "",
+                          "type": "uint256[]"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "nonpayable",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "_taskId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "_taskPublisher",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "_finishingRound",
+                          "type": "uint256"
+                        },
+                        {
+                          "components": [
                             {
-                                "name": "_taskId",
-                                "type": "uint256"
+                              "internalType": "address[]",
+                              "name": "trainers",
+                              "type": "address[]"
                             },
                             {
-                                "name": "_startingRound",
-                                "type": "uint256"
+                              "internalType": "uint256[]",
+                              "name": "scores",
+                              "type": "uint256[]"
                             },
                             {
-                                "name": "_finishingRound",
-                                "type": "uint256"
+                              "internalType": "uint256[]",
+                              "name": "totalRounds",
+                              "type": "uint256[]"
                             },
                             {
-                                "name": "_trainers",
-                                "type": "address[]"
+                              "internalType": "uint256[]",
+                              "name": "objectiveRep",
+                              "type": "uint256[]"
                             },
                             {
-                                "name": "_scores",
-                                "type": "uint256[]"
+                              "internalType": "uint256[]",
+                              "name": "subjectiveRep",
+                              "type": "uint256[]"
                             },
                             {
-                                "name": "_totalRounds",
-                                "type": "uint256[]"
+                              "internalType": "uint256[]",
+                              "name": "prevRep",
+                              "type": "uint256[]"
+                            },
+                            {
+                              "internalType": "uint256[]",
+                              "name": "weight",
+                              "type": "uint256[]"
+                            },
+                            {
+                              "internalType": "uint256[]",
+                              "name": "totalNumberOfTasksWithPublisher",
+                              "type": "uint256[]"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "goodBehaviourThreshold",
+                              "type": "uint256"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "maxRounds",
+                              "type": "uint256"
                             }
-                        ],
-                        "name": "updateReputation",
-                        "outputs": [],
-                        "payable": false,
-                        "stateMutability": "nonpayable",
-                        "type": "function"
+                          ],
+                          "internalType": "struct ManageReputation.ReputationParams",
+                          "name": "data",
+                          "type": "tuple"
+                        }
+                      ],
+                      "name": "calculateReputation",
+                      "outputs": [],
+                      "stateMutability": "nonpayable",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "_taskId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "_taskPublisher",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "_startingRound",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "_finishingRound",
+                          "type": "uint256"
+                        },
+                        {
+                          "components": [
+                            {
+                              "internalType": "address[]",
+                              "name": "trainers",
+                              "type": "address[]"
+                            },
+                            {
+                              "internalType": "uint256[]",
+                              "name": "scores",
+                              "type": "uint256[]"
+                            },
+                            {
+                              "internalType": "uint256[]",
+                              "name": "totalRounds",
+                              "type": "uint256[]"
+                            },
+                            {
+                              "internalType": "address[]",
+                              "name": "allTrainers",
+                              "type": "address[]"
+                            },
+                            {
+                              "internalType": "uint256[]",
+                              "name": "interactionsTpTa",
+                              "type": "uint256[]"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "_interactionsTp",
+                              "type": "uint256"
+                            }
+                          ],
+                          "internalType": "struct ManageReputation.ReputationData",
+                          "name": "data",
+                          "type": "tuple"
+                        }
+                      ],
+                      "name": "calculateSubjectiveReputation",
+                      "outputs": [
+                        {
+                          "internalType": "uint256[]",
+                          "name": "",
+                          "type": "uint256[]"
+                        }
+                      ],
+                      "stateMutability": "nonpayable",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "int256",
+                          "name": "x",
+                          "type": "int256"
+                        }
+                      ],
+                      "name": "calculateTanhLambdaX",
+                      "outputs": [
+                        {
+                          "internalType": "int256",
+                          "name": "",
+                          "type": "int256"
+                        }
+                      ],
+                      "stateMutability": "pure",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "taskId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "_addr",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "maxRounds",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "iterateMappingNegative",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "taskId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "_addr",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "maxRounds",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "iterateMappingPositive",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function"
                     }
-                ]
-            },
-            "Business": {
-                "address": "<BUSINESS_CONTRACT_ADDRESS>",
-                "abi": [
-                    
-                ]
+                  ]
             }
         }
     }
-}
+  }
+  

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-import "./AccesManagement.sol";
 
 contract BusinessLogic {
 
@@ -132,48 +131,13 @@ contract BusinessLogic {
     function setTaskTrainers(uint _taskId, address[] memory taskTrainers) public {
         require(_taskId + 1 <= tasks.length, "Task does not exist");
         Task storage task = tasks[_taskId];
-        require(task.publisher == msg.sender, "Only the publisher can select trainers");
-        for (uint i = 0; i < taskTrainers.length; i++) {
-            require(isInAddressArray(task.registeredTrainers, taskTrainers[i]) == true, "the trainer is not registered in the task");
-            require(task.requiredTrainers > task.trainers.length, "Already reached required number of trainers , u can not be selected to this task to this task");
-            task.trainers.push(taskTrainers[i]);
-            if (task.trainers.length == task.requiredTrainers) {
-                task.state = "training";
-            }
-        }
-    }
-
-    // set the trainers for a specific task for a specific time slot
-    function setTaskRoundTrainers(uint _taskId, uint _round, address[] memory taskTrainers) public {
-        require(_taskId + 1 <= tasks.length, "Task does not exist");
-        Task storage task = tasks[_taskId];
-        if (_round == 0) {
-            tasks[_taskId].trainers = taskTrainers;
-        }
-
-        for (uint i = 0; i < taskTrainers.length; i++) {
-            require(isInAddressArray(task.registeredTrainers, taskTrainers[i]) == true,"the trainer is not registered in the task");
-            taskSelectedTrainers[_taskId][taskTrainers[i]].push(_round + 4);
-            if (isInAddressArray(task.trainers, taskTrainers[i]) == false) {
-                tasks[_taskId].trainers.push(taskTrainers[i]);
-            }
-        }
+        // require(task.publisher == msg.sender, "Only the publisher can select trainers");
+         task.trainers= taskTrainers;
         task.state = "training";
+           
     }
 
-    // ida jak prblm later check this one
-    function getTrainersForTaskRound(uint _taskId,uint _round) public view returns (address[] memory) {
-        require(_taskId < tasks.length, "Task does not exist");
-        address[] memory _roundChosenTrainers = new address[](tasks[_taskId].requiredTrainers);
-        uint _index = 0;
-        for (uint i = 0; i < tasks[_taskId].trainers.length; i++) {
-            if (isInIntArray(taskSelectedTrainers[_taskId][tasks[_taskId].trainers[i]],_round) == true) {
-                _roundChosenTrainers[_index] = tasks[_taskId].trainers[i];
-                _index++;
-            }
-        }
-        return _roundChosenTrainers;
-    }
+
 
     function getTrainersForTask(uint256 _taskId) external view returns (address[] memory) {
         require(_taskId < tasks.length,"Invalid task ID: Task does not exist.");
@@ -193,21 +157,12 @@ contract BusinessLogic {
         for (uint i = 0; i <= tasks.length - 1; i++) {
             // u need to consider in each task the level of participation too
             if (tasks[i].publisher == _taskPublisher && isTrainerForTask(i, _addr) && tasks[i].taskId != taskId) {
-                _totalInteractions += taskParticipationLevel(i, _addr);
+                _totalInteractions += tasks[taskId].maxRounds;
             }
         }
         return _totalInteractions;
     }
 
-    function taskParticipationLevel(uint _taskId,address addr) public view returns (uint256) {
-        require(_taskId + 1 <= tasks.length, "Task does not exist");
-        require(registeredTrainers[addr] == true,"Trainer is not registered in the system");
-        uint256 _totalRounds = 0;
-        for (uint i = 1; i <= taskSelectedTrainers[_taskId][addr].length; i++) {
-            _totalRounds += _roundsDifference;
-        }
-        return _totalRounds;
-    }
 
     // all the interactions a trainer had in the system including all the tasks
     function totalParticipationLevel(address addr) public view returns (uint256) {
@@ -215,7 +170,7 @@ contract BusinessLogic {
         uint256 _total = 0;
         for (uint i = 0; i < tasks.length; i++) {
             if (isTrainerForTask(i, addr) == true) {
-                _total += taskParticipationLevel(i, addr);
+                _total += tasks[i].maxRounds;
             }
         }
         return _total;
@@ -311,15 +266,14 @@ contract BusinessLogic {
     }
 
     function getUpdatesForAggregationTask(uint taskId,uint _round) public  returns (address[] memory, string[] memory) {
-        address[] memory _roundTrainers = getTrainersForTaskRound(taskId,_round);
-        string[] memory taskUpdates = new string[](_roundTrainers.length);
-        for (uint i = 0; i < _roundTrainers.length; i++) {
-            taskUpdates[i] = updates[taskId][_round][_roundTrainers[i]].weights;
+        string[] memory taskUpdates = new string[](tasks[taskId].trainers.length);
+        for (uint i = 0; i < tasks[taskId].trainers.length; i++) {
+            taskUpdates[i] = updates[taskId][_round][tasks[taskId].trainers[i]].weights;
         }
-        return (_roundTrainers, taskUpdates);
+        return (tasks[taskId].trainers, taskUpdates);
     }
 
-    function UpdateGlobalModelWeights(uint _taskId,string memory globalModelWeightsCID,string memory _state) public  {
+    function UpdateGlobalModelWeights(uint _taskId,string memory globalModelWeightsCID) public  {
         require(_taskId + 1 <= tasks.length, "Task does not exist");
         tasks[_taskId].globalModelWeightsCID = globalModelWeightsCID;
         tasks[_taskId].currentRound++;
@@ -339,7 +293,7 @@ contract BusinessLogic {
     function isInAddressArray(address[] memory arr, address look) public view returns (bool) {
     bool found = false;
      if(arr.length>0)    
-          {    for (uint i = 0; i < arr.length; i++) {
+          {  for (uint i = 0; i < arr.length; i++) {
       if (arr[i] == look) {
         found = true;
         break;
@@ -348,31 +302,6 @@ contract BusinessLogic {
     return found;
   } 
 
-
-
-
-function isInIntArray(uint[] memory arr, uint look) public view returns (bool) {
-    uint participationPeriod = 4;  // Each period spans 4 rounds
-
-    for (uint i = 0; i < arr.length; i++) {
-        uint start = arr[i];
-        uint end = start + participationPeriod - 1;  // Calculate the end of the participation period
-
-if(look>=4){
-        // Check if the round is within the start and end range
-        if (look >= start && look <= end) {
-            return true;
-        }
-}
-else{
-        if (look < start) {
-            return true;
-        }
-}
-    }
-
-    return false;
-}
 
 
     function setReputation(address _addr, uint256 _newRep) public  {

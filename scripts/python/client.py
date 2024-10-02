@@ -62,7 +62,7 @@ def main(provider, abi, ipfs, account, passphrase, contract, train, test, learni
     current_task = contract_task.get_task_byId(task)
     if current_task[10] == "training":
       break
-  chosen_trainers = contract_task.get_trainers_task_round(task,0)
+  chosen_trainers = contract_task.get_trainers_task(task)
   status = contract_task.is_element_in_array(chosen_trainers,account)
   if status:
     i=0
@@ -90,24 +90,17 @@ def main(provider, abi, ipfs, account, passphrase, contract, train, test, learni
         "trainingDataPoints": len(train_loader.dataset),
         "weights": model_weights_ipfs_hash
         }
-      with open('mimi.txt', 'a') as file:
-        file.write(f" {model_weights_ipfs_hash}  \n") 
-      
+
       transaction, transaction_receipt = contract_task.upload_model(update,task,chosen_trainers,i)
-      i+=1
-      while True and i!=current_task[7] :
+      i+=1 
+      if i!=current_task[7] :
         time.sleep(10)
-        initial_trainers , local_updates = contract_task.get_updates_task(task,i)
-
-        with open('mimi.txt', 'a') as file:
-          file.write(f" {initial_trainers}  {local_updates} \n") 
-        
-
-        # get the task details to access the model cid
-        current_task = contract_task.get_task_byId(task)
-        if current_task[10] == "training":
-          break
-      if i==current_task[7]:
+        while True:
+          # get the task details to access its state
+          current_task = contract_task.get_task_byId(task)
+          if current_task[10] == "training":
+            break
+      else:
         break
       time.sleep(0.5)
   else:

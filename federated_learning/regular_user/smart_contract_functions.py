@@ -245,11 +245,11 @@ class Contract_zksync():
     })
     return tx , self.wait_tx(tx,self.private_key)
 
-  def update_global_model_weights(self ,taskId , globalModel , state):
+  def update_global_model_weights(self ,taskId , globalModel ):
       # Load your private key
       account = self.zksync_provider.eth.account.from_key(self.private_key)
       # Build and send the transaction
-      tx = self.contract.functions.UpdateGlobalModelWeights(taskId,globalModel,state).build_transaction({
+      tx = self.contract.functions.UpdateGlobalModelWeights(taskId,globalModel).build_transaction({
           'from': account.address,
           'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
       })
@@ -302,15 +302,6 @@ class Contract_zksync():
     })
     return tx , self.wait_tx(tx,self.private_key)
     
-  def set_task_trainers_round(self,taskId,round,trainers):
-    # Load your private key
-    account = self.zksync_provider.eth.account.from_key(self.private_key)
-    # Build and send the transaction
-    tx = self.contract.functions.setTaskRoundTrainers(taskId,round,trainers).build_transaction({
-        'from': account.address,
-        'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
-    })
-    return tx , self.wait_tx(tx,self.private_key)
 
 
   def get_trainers_task(self,taskId):
@@ -324,9 +315,7 @@ class Contract_zksync():
     return self.contract.functions.getUpdatesForAggregationTask(task,round).call()
    
 
-  def get_trainers_task_round(self,task,round):
-    return self.contract.functions.getTrainersForTaskRound(task,round).call()
-  
+
   def upload_scores(self, task, round, scores):
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
@@ -395,11 +384,11 @@ class Contract_zksync():
 
 
 
-  def update_reputation(self, taskId, startingRound , finishingRound, addrs ,  scores , completeness):
+  def update_reputation(self, taskId, addrs ,  scores , completeness):
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
     # Build and send the transaction
-    tx = self.contract.functions.updateReputation(taskId,startingRound,finishingRound,addrs , scores , completeness).build_transaction({
+    tx = self.contract.functions.updateReputation(taskId,addrs , scores , completeness).build_transaction({
         'from': account.address,
         'nonce': self.zksync_provider.eth.get_transaction_count(account.address)+1
     })

@@ -67,7 +67,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
   task_requester_instance = task_requester.TaskRequester(ipfs)
   selected_trainers = task_requester_instance.selectTrainers(current_task[9],current_task[8])  
   time.sleep(10)
-  contract_task.set_task_trainers_round(task,i,selected_trainers)
+  contract_task.set_task_trainers(task,selected_trainers)
 
 
   while True:
@@ -77,13 +77,10 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
       break  
 
   while True:
-    
     while True:
       initial_trainers , local_updates = contract_task.get_updates_task(task,i)
       if len(initial_trainers)>0:
         break
-
-
 
     
     local_hash = "-".join(local_updates)
@@ -93,6 +90,9 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
       global_model_weights = current_task[5]
     else:
       global_model_weights=""
+
+
+
 
 
     tx, tx_receipt = contract_layer1.evaluation_admin(local_hash, trainers, current_task[1] , global_model_weights , evaluation, str(i))
@@ -124,29 +124,36 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
     while global_model_weights_hash == "":
       global_model_weights_hash = contract_layer1.get_global_model_weights_hash()
     
-    if (i+1)%4 == 0:
-      task_state = "reputation"
-    else:
-      task_state = "training"
 
-    scores_round = contract_task.get_scores_task_round(task,i)
+    contract_task.update_global_model_weights(task,global_model_weights_hash)
+
+    if (i+1) != current_task[7]:
+      i+=1    
+      contract_task.update_task_state(task,"training")
+      while True:
+        time.sleep(10)
+        # get the task details to access the model cid
+        current_task = contract_task.get_task_byId(task)
+        if current_task[10] == "training":
+          break
+        contract_task.update_task_state(task,"training")
+ 
+      while True:
+        time.sleep(10)
+        # get the task details to access the model cid
+        current_task = contract_task.get_task_byId(task)
 
 
-    contract_task.update_global_model_weights(task,global_model_weights_hash,task_state)
-    while True: 
-      gg = contract_task.get_task_byId(task)
-      if(gg[5] == global_model_weights_hash):
-        break
+        if current_task[10] == "evaluation":
+          break
 
+    else :  
 
-
-    if (i+1)%4 == 0:   
 
       my_array = []
-      for m in range(i-3,i+1):
+      for m in range(0,current_task[7]):
         my_array.append(contract_task.get_scores_task_round(task,m))
-
-    
+ 
 # we send this to the oracle for pre evaluation 
       addr_list = []
       values_list = []
@@ -161,6 +168,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
 
       addr_list = "-".join(addr_list)
       values_list = '-'.join(map(str, values_list))
+
 
       contract_layer1.pre_rep(addr_list, values_list)
       pre_rep = contract_layer1.pre_rep_result() 
@@ -187,7 +195,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
             counts[index] += 1
 
 
-      rep_tx, rep_tx_receipt = contract_reputation.update_reputation(task, i-3 , i+1, pre_rep_trainers ,  pre_rep , counts )
+      rep_tx, rep_tx_receipt = contract_reputation.update_reputation(task,  pre_rep_trainers ,  pre_rep , counts )
 
       time.sleep(10)
 
@@ -204,46 +212,13 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
 
       with open('performance.txt', 'a') as file:
         file.write(f" {all_reputation} \n") 
-
-      if (i+1) != current_task[7]:  
-        contract_task.set_task_trainers_round(task,i+1,selected_trainers)
-
-
-      else:
-        contract_task.update_task_state(task,"done")
-
-
-
-      # with open('performance.txt', 'a') as file:
-      #   file.write(f"all reps {all_reputation}  \n")      
-          
-
-
-    else:
-
-      contract_task.update_task_state(task,"training")
-      while True:
-        # get the task details
-        current_task = contract_task.get_task_byId(task)
-        if current_task[10] == "training":
-          break
-
-    i+=1    
- 
-    while True:
-      time.sleep(10)
-      # get the task details to access the model cid
-      current_task = contract_task.get_task_byId(task)
-      if current_task[10] == "evaluation" or i == current_task[7]:
-        break
-
-
-    
-
-
-    if i == current_task[7]:
+      contract_task.update_task_state(task,"done")
       break
-    time.sleep(0.5)
+
+
+
+
+
 
 
 def extract_addresses_and_concatenate(data):

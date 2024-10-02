@@ -185,14 +185,14 @@ declare -A function_params
 # Predefined parameters for functions necessary to set up a blockchain network with a single layer , in case of L2 skip all these commands
 function_params[create_accounts]="4 4 ../../setup/L1/blockchain/datadir 15"
 function_params[create_account_task_publisher]="../../setup/L1/blockchain/datadir 15" 
-function_params[update_accounts_balance]="../../networks/blockchain 1000000000000000000000 ../../networks/blockchain/datadir"
+function_params[update_accounts_balance]="../../setup/L1/blockchain 1000000000000000000000 ../../setup/L1/blockchain/datadir"
 function_params[create_docker_network]="BCFL bridge 172.16.240.0/20"
 function_params[build_bc_node_image]=""
 function_params[start_bc_containers]="4 4444" 
 function_params[connect_peers]="8fdf1946a39b"
 
 # Predefined parameters for function necessary to authorize the oracle operator node
-function_params[authorize_operator]="0xd0C4E6F63F8286a6A4860Cfbc0272f8E1267EbF8 1 Operator Operator 0x1e92293C8aC5b7957336b480d260cB09610465ba"
+function_params[authorize_operator]="0x3c6386c2Ee74285A182850b8c2BC0a6027FD6E60 1 Operator Operator 0xE3d7A06d36FCD1ba02376a642Faa4b8BB121A2cc"
 
 
 
@@ -200,9 +200,9 @@ function_params[authorize_operator]="0xd0C4E6F63F8286a6A4860Cfbc0272f8E1267EbF8 
 # Predefined parameters for functions necessary to set up the FL business logic
 function_params[build_fl_node_image]="" ## run it only once
 function_params[split_data]="mnist 1000 noniid-labeldir 0.5 ../../federated_learning/regular_user/data_manipulation/data/ " ## run it only once to simulate the trainers having their own datasets and that's it 
-function_params[register_trainers]="0x8CCd78c8748747F355cd2720e8402e192c3f7d96 BusinessLogic businessLogic 8 1"
-function_params[start_task_publisher_containers]="0x8CCd78c8748747F355cd2720e8402e192c3f7d96 1 BusinessLogic businessLogic 12 5"
-function_params[start_trainers_containers]="0x8CCd78c8748747F355cd2720e8402e192c3f7d96 BusinessLogic businessLogic 0xDe9BFE17987aF53F4b9A1d09a2431f544ECd9EA9 ManageReputation manageRep  0xb40C3e52B6D7ed9883F18c1e884c50600A681674 APIConsumer APIconsumer 5 1 accuracy 0"
+function_params[register_trainers]="0x29f3C506E29Ce1799dcd705bf5cfE62bc1f9B01f BusinessLogic businessLogic 8 1"
+function_params[start_task_publisher_containers]="0x29f3C506E29Ce1799dcd705bf5cfE62bc1f9B01f 1 BusinessLogic businessLogic 2 5"
+function_params[start_trainers_containers]="0x29f3C506E29Ce1799dcd705bf5cfE62bc1f9B01f BusinessLogic businessLogic 0x4c7ed1A4dD16DEC9A58Bf21EddEa89F80cFFd933 ManageReputation manageRep  0xf9096664897C456b121EB7b54360d30aE7d04bA6 APIConsumer APIconsumer 5 1 accuracy 6"
 
 
 # Main logic to dispatch functions based on command-line arguments
