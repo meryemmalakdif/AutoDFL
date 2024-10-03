@@ -81,6 +81,8 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
       initial_trainers , local_updates = contract_task.get_updates_task(task,i)
       if len(initial_trainers)>0:
         break
+    with open('performance.txt', 'a') as file:
+      file.write(f" stuck here  \n")   
 
     
     local_hash = "-".join(local_updates)
@@ -119,7 +121,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
     models_scores = "-".join(sc)
 
 
-    tx, tx_receipt = contract_layer1.trigger_aggregation_admin(local_hash, models_scores, current_task[1])
+    tx, tx_receipt = contract_layer1.trigger_aggregation_admin(local_hash, models_scores, current_task[1],current_task[5],str(i))
     global_model_weights_hash = contract_layer1.get_global_model_weights_hash()
     while global_model_weights_hash == "":
       global_model_weights_hash = contract_layer1.get_global_model_weights_hash()
@@ -204,7 +206,6 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
         file.write(f" obj {obj} \n")   
         file.write(f" subj {subj} \n") 
         file.write(f" workers {workers} \n")  
-        file.write(f" finishing round {i+1} \n")       
      
       
     

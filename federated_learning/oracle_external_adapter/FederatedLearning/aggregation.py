@@ -14,5 +14,4 @@ class Aggregator():
     weights_cid = self.weights_loader.store(new_weights)
     return weights_cid
   
-  
 

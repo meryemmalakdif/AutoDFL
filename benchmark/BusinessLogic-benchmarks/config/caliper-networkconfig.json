@@ -4,24 +4,1012 @@
   },
   "ethereum": {
       "txFeeCap": 6.00,
-      "url": "ws://172.16.240.6:8546",
-      "contractDeployerAddress": "0x0403996469e2Dbb1f675154C7264Ed9Ba1c7B79f",
-      "contractDeployerAddressPrivateKey": "0x3ffa76af9183c66ca640f45a81c78dd1f5f3787f1a5f7d285d3d481c89967a25",
-      "contractDeployerAddressPassword": "pIuRCa2vz3sPXz0",
-      "fromAddress":"0x0403996469e2Dbb1f675154C7264Ed9Ba1c7B79f",
-      "fromAddressPrivateKey":"0x3ffa76af9183c66ca640f45a81c78dd1f5f3787f1a5f7d285d3d481c89967a25",
-      "fromAddressPassword": "pIuRCa2vz3sPXz0",
+      "url": "ws://172.16.240.3:8546",
+      "contractDeployerAddress": "0x01CD6F9962d2e6451143D20eEB93C0ECCAC241c9",
+      "contractDeployerAddressPrivateKey": "0xb383e58579c46debcb4fb1649cea60b2c2a0f55df445068ea9dee7638f500e22",
+      "contractDeployerAddressPassword": "d1WUuJPCpTfSSvo",
+      "fromAddress":"0x01CD6F9962d2e6451143D20eEB93C0ECCAC241c9",
+      "fromAddressPrivateKey":"0xb383e58579c46debcb4fb1649cea60b2c2a0f55df445068ea9dee7638f500e22",
+      "fromAddressPassword": "d1WUuJPCpTfSSvo",
       "transactionConfirmationBlocks": 1,
       "chainId": 4444,
       "contracts": {
           "BusinessLogic":{
-            "address":"0xEb66bfB79d4A3af2c8773Fe4fa7E10Ed12d7C0C7",
+            "address":"0x1E2a37F8Cd08f18Cd1A908D43CF53F1efe075e86",
               "estimateGas": true,
               "gas": {
-                "function": 203960
+                "submitUpdate": 203960
                 
               },
-              "abi": []
+              "abi": [
+                {
+                  "inputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "constructor"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "globalModelWeightsCID",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "_state",
+                      "type": "string"
+                    }
+                  ],
+                  "name": "UpdateGlobalModelWeights",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "accountsReputation",
+                  "outputs": [
+                    {
+                      "internalType": "address",
+                      "name": "_trainerAddr",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "_reputation",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "addr",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "allTasksOfTaskPublisher",
+                  "outputs": [
+                    {
+                      "internalType": "uint256[]",
+                      "name": "",
+                      "type": "uint256[]"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "balances",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [],
+                  "name": "deposit",
+                  "outputs": [],
+                  "stateMutability": "payable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [],
+                  "name": "getAllReputations",
+                  "outputs": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "_trainerAddr",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "_reputation",
+                          "type": "uint256"
+                        }
+                      ],
+                      "internalType": "struct BusinessLogic.Trainer[]",
+                      "name": "",
+                      "type": "tuple[]"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [],
+                  "name": "getAllTasks",
+                  "outputs": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "taskId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "modelCID",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "infoCID",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "publisher",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address[]",
+                          "name": "trainers",
+                          "type": "address[]"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "globalModelWeightsCID",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "currentRound",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "maxRounds",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "requiredTrainers",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address[]",
+                          "name": "registeredTrainers",
+                          "type": "address[]"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "state",
+                          "type": "string"
+                        }
+                      ],
+                      "internalType": "struct BusinessLogic.Task[]",
+                      "name": "",
+                      "type": "tuple[]"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [],
+                  "name": "getAllTrainers",
+                  "outputs": [
+                    {
+                      "internalType": "address[]",
+                      "name": "",
+                      "type": "address[]"
+                    }
+                  ],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "_addr",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "getBalance",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "_addr",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "getReputation",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "_round",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "getRoundScores",
+                  "outputs": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "trainer",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "score",
+                          "type": "uint256"
+                        }
+                      ],
+                      "internalType": "struct BusinessLogic.Score[]",
+                      "name": "",
+                      "type": "tuple[]"
+                    }
+                  ],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "taskId",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "getTaskById",
+                  "outputs": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "taskId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "modelCID",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "infoCID",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "publisher",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address[]",
+                          "name": "trainers",
+                          "type": "address[]"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "globalModelWeightsCID",
+                          "type": "string"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "currentRound",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "maxRounds",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "requiredTrainers",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address[]",
+                          "name": "registeredTrainers",
+                          "type": "address[]"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "state",
+                          "type": "string"
+                        }
+                      ],
+                      "internalType": "struct BusinessLogic.Task",
+                      "name": "",
+                      "type": "tuple"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "getTaskState",
+                  "outputs": [
+                    {
+                      "internalType": "string",
+                      "name": "",
+                      "type": "string"
+                    }
+                  ],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "getTrainersForTask",
+                  "outputs": [
+                    {
+                      "internalType": "address[]",
+                      "name": "",
+                      "type": "address[]"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "taskId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "_round",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "getUpdatesForAggregationTask",
+                  "outputs": [
+                    {
+                      "internalType": "address[]",
+                      "name": "",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "string[]",
+                      "name": "",
+                      "type": "string[]"
+                    }
+                  ],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "_taskPublisher",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "_addr",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "taskId",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "historicalInteractions",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address[]",
+                      "name": "arr",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "look",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "isInAddressArray",
+                  "outputs": [
+                    {
+                      "internalType": "bool",
+                      "name": "",
+                      "type": "bool"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "addr",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "isTrainerForTask",
+                  "outputs": [
+                    {
+                      "internalType": "bool",
+                      "name": "",
+                      "type": "bool"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "string",
+                      "name": "_modelCID",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "_infoCID",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxRounds",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "requiredTrainers",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "publishTask",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [],
+                  "name": "registerTaskPublisher",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [],
+                  "name": "registerTrainer",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "registerTrainerTask",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "registeredTaskPublishers",
+                  "outputs": [
+                    {
+                      "internalType": "bool",
+                      "name": "",
+                      "type": "bool"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "registeredTrainers",
+                  "outputs": [
+                    {
+                      "internalType": "bool",
+                      "name": "",
+                      "type": "bool"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "scores",
+                  "outputs": [
+                    {
+                      "internalType": "address",
+                      "name": "trainer",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "score",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "_addr",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "_newRep",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "setReputation",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "taskTrainers",
+                      "type": "address[]"
+                    }
+                  ],
+                  "name": "setTaskTrainers",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_task",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "_round",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "trainer",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "score",
+                          "type": "uint256"
+                        }
+                      ],
+                      "internalType": "struct BusinessLogic.Score[]",
+                      "name": "_scores",
+                      "type": "tuple[]"
+                    }
+                  ],
+                  "name": "submitScore",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "trainingAccuracy",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "trainingDataPoints",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "string",
+                          "name": "weights",
+                          "type": "string"
+                        }
+                      ],
+                      "internalType": "struct BusinessLogic.Update",
+                      "name": "modelUpdate",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "task",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "task_trainers",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "_round",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "submitUpdate",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "taskPublishers",
+                  "outputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "taskSelectedTrainers",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "tasks",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "taskId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "modelCID",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "infoCID",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "publisher",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "globalModelWeightsCID",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "currentRound",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxRounds",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "requiredTrainers",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "state",
+                      "type": "string"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "addr",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "totalNumberOfTasks",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "addr",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "_publisher",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "totalNumberOfTasksWithPublisher",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "addr",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "totalParticipationLevel",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "trainers",
+                  "outputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "_taskId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "_state",
+                      "type": "string"
+                    }
+                  ],
+                  "name": "updateTaskState",
+                  "outputs": [],
+                  "stateMutability": "nonpayable",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "updates",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "trainingAccuracy",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "trainingDataPoints",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "weights",
+                      "type": "string"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                }
+              ]
           }
       }
   }

@@ -178,12 +178,14 @@ contract BusinessLogic {
 
     // total number of the tasks a trainer has participated in
     function totalNumberOfTasks(address addr) public view returns (uint256) {
-        require(registeredTrainers[addr] == true,"Trainer is not register in the system");
-        uint256 _totalTasks = 0;
+              uint256 _totalTasks = 0;
+     if(registeredTrainers[addr] == true)
+      {
         for (uint i = 0; i < tasks.length; i++) {
             if (isTrainerForTask(i, addr) == true) {
                 _totalTasks += 1;
             }
+        }
         }
         return _totalTasks;
     }
@@ -196,6 +198,22 @@ contract BusinessLogic {
             if (tasks[i].publisher == _publisher && isTrainerForTask(i, addr) == true) {
                 _totalTasks += 1;
             }
+        }
+        return _totalTasks;
+    }
+
+        // total number of the tasks of a specific task publisher a trainer has participated in excepted the current task
+    function totalNumberOfTasksWithPublisherTask(address addr,address _publisher, uint256 taskId) public view returns (uint256) {
+                uint256 _totalTasks = 0;
+
+        if(registeredTrainers[addr] == true)
+        {
+            for (uint i = 0; i < tasks.length; i++) {
+            if (tasks[i].publisher == _publisher && isTrainerForTask(i, addr) == true && tasks[i].taskId != taskId) {
+                _totalTasks += 1;
+            }
+        
+        }
         }
         return _totalTasks;
     }
@@ -234,13 +252,13 @@ contract BusinessLogic {
         return tasks[taskId];
     }
 
-    function submitUpdate(Update memory modelUpdate,uint task,address[] memory task_trainers,uint _round) public  {
+    function submitUpdate(Update memory modelUpdate,uint task,uint _round) public  {
         require(updatesSubmitted[task][_round][msg.sender] == false,"The sender already submitted updates for this running round");
         Task storage task_details = tasks[task];
         updates[task][_round][msg.sender] = modelUpdate;
         updatesSubmitted[task][_round][msg.sender] = true;
         updatesCount[task][_round]++;
-        if (updatesCount[task][_round] == task_trainers.length) {
+        if (updatesCount[task][_round] == task_details.trainers.length) {
             task_details.state = "evaluation";
         }
     }

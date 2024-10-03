@@ -192,7 +192,7 @@ function_params[start_bc_containers]="4 4444"
 function_params[connect_peers]="8fdf1946a39b"
 
 # Predefined parameters for function necessary to authorize the oracle operator node
-function_params[authorize_operator]="0x3c6386c2Ee74285A182850b8c2BC0a6027FD6E60 1 Operator Operator 0xE3d7A06d36FCD1ba02376a642Faa4b8BB121A2cc"
+function_params[authorize_operator]="0x4eb76510b2755Cae35Dd4be05b443700A4Ebf5eC 1 Operator Operator 0x469833EeFe9941650b3aaf84178b0458D0dde0B7"
 
 
 
@@ -200,9 +200,9 @@ function_params[authorize_operator]="0x3c6386c2Ee74285A182850b8c2BC0a6027FD6E60 
 # Predefined parameters for functions necessary to set up the FL business logic
 function_params[build_fl_node_image]="" ## run it only once
 function_params[split_data]="mnist 1000 noniid-labeldir 0.5 ../../federated_learning/regular_user/data_manipulation/data/ " ## run it only once to simulate the trainers having their own datasets and that's it 
-function_params[register_trainers]="0x29f3C506E29Ce1799dcd705bf5cfE62bc1f9B01f BusinessLogic businessLogic 8 1"
-function_params[start_task_publisher_containers]="0x29f3C506E29Ce1799dcd705bf5cfE62bc1f9B01f 1 BusinessLogic businessLogic 2 5"
-function_params[start_trainers_containers]="0x29f3C506E29Ce1799dcd705bf5cfE62bc1f9B01f BusinessLogic businessLogic 0x4c7ed1A4dD16DEC9A58Bf21EddEa89F80cFFd933 ManageReputation manageRep  0xf9096664897C456b121EB7b54360d30aE7d04bA6 APIConsumer APIconsumer 5 1 accuracy 6"
+function_params[register_trainers]="0x15B0B07266a6e168b2dEA0315ABD2caa678b2B26 BusinessLogic businessLogic 8 1"
+function_params[start_task_publisher_containers]="0x15B0B07266a6e168b2dEA0315ABD2caa678b2B26 1 BusinessLogic businessLogic 2 5"
+function_params[start_trainers_containers]="0x15B0B07266a6e168b2dEA0315ABD2caa678b2B26 BusinessLogic businessLogic 0x61b9f0a66313CB43B337CaF13feCb40fae4Ea60c ManageReputation manageRep  0x8550D8cf1107F94B8b51A35Ef62958183D351267 APIConsumer APIconsumer 5 1 accuracy 0"
 
 
 # Main logic to dispatch functions based on command-line arguments

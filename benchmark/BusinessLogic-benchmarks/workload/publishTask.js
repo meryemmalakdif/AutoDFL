@@ -73,7 +73,7 @@ class StoreWorkload extends WorkloadModuleBase {
 
             let args = {
                 contract :this.roundArguments.contract,
-                verb: 'function',
+                verb: 'publishTask',
                 args: [i, _modelCID,_infoCID,maxRounds,requiredTrainers],
                 readOnly: false,
                 // nonce: currentNonce, // Use the incremented nonce

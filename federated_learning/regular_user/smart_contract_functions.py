@@ -173,11 +173,11 @@ class Contract():
     })
     return tx , self.wait_tx(tx,self.private_key)
   
-  def trigger_aggregation_admin(self, local_models, scores, model_hash):
+  def trigger_aggregation_admin(self, local_models, scores, model_hash, weights_hash,round):
     # Load your private key
     account = self.web3.eth.account.from_key(self.private_key)
     # Build and send the transaction
-    tx = self.contract.functions.requestAggregation(local_models, scores, model_hash).build_transaction({
+    tx = self.contract.functions.requestAggregation(local_models, scores, model_hash,weights_hash,round).build_transaction({
         'from': account.address,
         'nonce': self.web3.eth.get_transaction_count(account.address)
     })
@@ -327,12 +327,12 @@ class Contract_zksync():
     return tx , self.wait_tx(tx,self.private_key)
   
 
-  def upload_model(self,modelUpdate,task,task_trainers,round):    
+  def upload_model(self,modelUpdate,task,round):    
     # Load your private key
     account = self.zksync_provider.eth.account.from_key(self.private_key)
     checksum_address = self.zksync_provider.to_checksum_address(account.address)
     # Build and send the transaction
-    tx = self.contract.functions.submitUpdate(modelUpdate,task,task_trainers,round).build_transaction({
+    tx = self.contract.functions.submitUpdate(modelUpdate,task,round).build_transaction({
         'from': checksum_address,
         'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
     })

@@ -11,8 +11,6 @@ def weighted_fed_avg(submissions, model_size, avg_weights):
 
   for i, flattened_weights in enumerate(submissions):
     # each submission or weights String has lets say some impact on the global model represented by avg_weights[i]
-    print("it happens before ", avg_weights)
-    print("it happens here ", avg_weights[i] / total_weights)
     flattened_weights = np.array(flattened_weights)
     if flattened_weights.size > 0:
       new_weights += flattened_weights * (avg_weights[i] / total_weights)

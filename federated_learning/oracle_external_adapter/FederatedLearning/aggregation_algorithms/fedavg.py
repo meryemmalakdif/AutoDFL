@@ -8,14 +8,8 @@ class FedAvgAggregator():
   def aggregate(self, submissions  , scores):
     #samples = [samples for (_, _, samples, _,_) in submissions]
     # the impact a specific model update has when aggregating is measured based on its data size
-    for element in scores:
-      print(type(element))
-    print("scores ", scores)
+
     normalized_scores = self.calculate_normalized_weights(scores)
-    # for index, fruit in enumerate(normalized_scores):
-    #   with open('dad.txt', 'a') as f:
-    #     f.write(f"{normalized_scores[index]}     \n") 
-    # refactor ya bent
     return weighted_fed_avg(submissions, self.model_size, normalized_scores)
   
   def calculate_normalized_weights(self,scores):

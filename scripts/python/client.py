@@ -84,14 +84,13 @@ def main(provider, abi, ipfs, account, passphrase, contract, train, test, learni
       weights_path = model_trainer.store(weights)
       model_weights_ipfs_hash = model_trainer.store_weights_ipfs(weights_path)
       trainingAccuracy = utilities.float_to_int(result['train_acc'])
-      validationAccuracy = utilities.float_to_int(result['val_acc'])
       update = {
         "trainingAccuracy": trainingAccuracy,
         "trainingDataPoints": len(train_loader.dataset),
         "weights": model_weights_ipfs_hash
         }
 
-      transaction, transaction_receipt = contract_task.upload_model(update,task,chosen_trainers,i)
+      transaction, transaction_receipt = contract_task.upload_model(update,task,i)
       i+=1 
       if i!=current_task[7] :
         time.sleep(10)

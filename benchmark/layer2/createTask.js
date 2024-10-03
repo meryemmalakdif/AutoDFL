@@ -2124,10 +2124,8 @@ async function main() {
   );
 
   // send transaction to add another owner
-  const taskHash = "745861e6a022d6c8e35a4b073c389d0dd4ce6aa1";
-  const amount = 256;
   const startTime = new Date().getTime();
-  var data = fs.readFileSync("../BusinessLogic-benchmarks/workload/workload.json");
+  var data = fs.readFileSync("../BusinessLogic-benchmarks/workload/publishTaskWorkload.json");
   var data= JSON.parse(data);
   let currentNonce = await wallet.getNonce();
   currentNonce;

@@ -34,7 +34,7 @@ contract ManageReputation {
         address _taskPublisher = _taskDetails.publisher;
         uint _threshold = (_trainers.length * 2) / 3;
         uint256 _goodBehaviourThreshold = 0;
-
+        
         // objective reputation
         for (uint j = 0; j <= _threshold - 1; j++) {
             _goodBehaviourThreshold += _scores[j];
@@ -57,35 +57,35 @@ contract ManageReputation {
     }
 
     // Reputation updates occur at the end of each timeslot, which is composed of multiple training rounds
-    function calculateSubjectiveReputation(uint _taskId, address[] memory _trainers, uint256[] memory _scores, uint256[] memory totalRounds) public returns (uint256[] memory) {
+    function calculateSubjectiveReputation(uint _taskId, address _trainer) public returns (uint256) {
         BusinessLogic.Task memory _taskDetails = taskContractInstance.getTaskById(_taskId);
         address _taskPublisher = _taskDetails.publisher;
         uint256 historical;
         // A weight of 0.5 is assigned to represent the impact of uncertainty in the interactions between the trainer and the publisher. This weight can be adjusted to control the influence of uncertainty
         uint256 _uncertainty_weight = 5;
-        uint256[] memory _subjectiveRep = new uint256[](_trainers.length);
+        uint256 _subjectiveRep ;
         uint256 _u;
 
         uint256 _interactionsTp = 0;
 
         address[] memory _allTrainers = taskContractInstance.getAllTrainers();
         for (uint j = 0; j < _allTrainers.length; j++) {
-            _interactionsTp += taskContractInstance.historicalInteractions(_taskPublisher, _allTrainers[j], _taskId);
+            _interactionsTp += taskContractInstance.totalNumberOfTasksWithPublisherTask(_allTrainers[j] ,_taskPublisher, _taskId);
         }
 
-        for (uint j = 0; j < _trainers.length; j++) {
+     
             // Calculate subjective reputation
             // a weight of 0.4 is assigned to positive interactions, while a weight of 0.6 is assigned to negative interactions
-            uint256 _interactionsTpTa = taskContractInstance.historicalInteractions(_taskPublisher, _trainers[j], _taskId);
+            uint256 _interactionsTpTa = taskContractInstance.historicalInteractions(_taskPublisher, _trainer, _taskId);
 
             if (_interactionsTp > 0) {
                 _u = _scale - ((_interactionsTpTa * _scale) / _interactionsTp); 
             }
 
             // The higher weight for negative interactions reflects their more destructive impact, emphasizing the importance of discouraging such behavior among trainers
-            historical = (_scale * _overallPositiveHistory[_taskPublisher][_trainers[j]] * 4) / (_overallPositiveHistory[_taskPublisher][_trainers[j]] * 4 + _overallNegativeHistory[_taskPublisher][_trainers[j]] * 6);
-            _subjectiveRep[j] = historical * (_scale - _u) + (_u * _uncertainty_weight * _scale) / 10;
-        }
+            historical = (_scale * _overallPositiveHistory[_taskPublisher][_trainer] * 4) / (_overallPositiveHistory[_taskPublisher][_trainer] * 4 + _overallNegativeHistory[_taskPublisher][_trainer] * 6);
+            _subjectiveRep = historical * (_scale - _u) + (_u * _uncertainty_weight * _scale) / 10;
+        
 
         return _subjectiveRep;
     }
@@ -106,32 +106,37 @@ contract ManageReputation {
         uint256 _localRep;
         uint256 _weight;
         uint256 _weight_local_rep;
+        uint256 _subjectiveRep ;
+     
 
         // objective reputation
         (uint256[] memory _objectiveRep, uint256 _goodBehaviourThreshold) = calculateObjectiveReputation(_taskId, _trainers, _scores, totalRounds);
-        // subjective reputation
-        uint256[] memory _subjectiveRep = calculateSubjectiveReputation(_taskId, _trainers, _scores, totalRounds);
+  
 
         for (uint j = 0; j < _trainers.length; j++) {
             // Calculate subjective reputation
-            if (taskContractInstance.totalNumberOfTasksWithPublisher(_trainers[j], _taskDetails.publisher) > 1) {
+            if (taskContractInstance.totalNumberOfTasksWithPublisherTask(_trainers[j], _taskDetails.publisher,_taskId) > 1) {
+                // subjective reputation
+                _subjectiveRep = calculateSubjectiveReputation(_taskId, _trainers[j]);
+     
                 // A weight of 0.8 is assigned to represent the impact of objective reputation, while a weight of 0.2 represents the effect of subjective reputation. These weights can be adjusted to control the influence of each reputation metric.
                 // Assigning a higher weight to objective reputation is essential, as it reflects the trainer's performance in the current task. In contrast, subjective reputation is based on historical performance with a publisher.
+                
                 _weight_local_rep = 8;
                 // we get the local reputation for the current time slot
-                _localRep = ((10 - _weight_local_rep) * _subjectiveRep[j] + (_weight_local_rep) * _objectiveRep[j]) / 10;
+                _localRep = ((10 - _weight_local_rep) * _subjectiveRep + (_weight_local_rep) * _objectiveRep[j]) / 10;
             } else {
                 // If it is the trainer's first interaction with a publisher, it indicates that the trainer has no existing subjective reputation
                 _localRep = _objectiveRep[j];
             }
             obj.push(_objectiveRep[j]);
-            subj.push(_subjectiveRep[j]);
+            subj.push(_subjectiveRep);
             workers.push(_trainers[j]);
 
             // get the previous reputation
             _prevRep = taskContractInstance.getReputation(_trainers[j]);
             // The weights assigned during the reputation update are based on the total interactions of the trainer within the system. As the number of interactions increases, it becomes more challenging to raise the trainer's reputation score.
-            _weight = uint256(calculateTanhLambdaX((int256(taskContractInstance.totalParticipationLevel(_trainers[j])) / 2 + 55) * 10000000));
+            _weight = uint256(calculateTanhLambdaX((int256(taskContractInstance.totalNumberOfTasks(_trainers[j])) / 2 + 55) * 10000000));
             // If the trainer's behavior is judged positively, a higher weight is assigned to their previous reputation.
             // This emphasizes that the reputation score increases gradually, reflecting the consistent hard work and dedication of the trainer
             if (_scores[j] >= _goodBehaviourThreshold && totalRounds[j] >= _taskDetails.maxRounds) {

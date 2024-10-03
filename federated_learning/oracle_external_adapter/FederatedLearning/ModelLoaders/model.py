@@ -10,7 +10,6 @@ class Model:
     def __get_layer_info(self, model):
         layers = []
         total = 0
-        print("milo u got this ")
         for param in model.parameters():
             shape = param.data.shape
             weights = np.prod(shape)

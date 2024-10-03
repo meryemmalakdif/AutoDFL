@@ -18,7 +18,8 @@
               "address":"0x0E34ACb6427453DB1039262b15Fe15aE94057c03",
                 "estimateGas": true,
                 "gas": {
-                  "calculateObjectiveReputation": 230682        
+                  "calculateObjectiveReputation": 230682,
+                  "calculateSubjectiveReputation": 177463          
                 },  
                 "abi": [
                   {

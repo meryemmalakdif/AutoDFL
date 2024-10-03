@@ -41,7 +41,7 @@ class StoreWorkload extends WorkloadModuleBase {
 
         
         let workload = [];
-        let roundIndexes = [0,1000,2000,3000];
+        let roundIndexes = [0,2500,5000,7500];
         // let roundIndexes = [0,200,400,600,1100,1600,2100];
 
         if(!isInit){

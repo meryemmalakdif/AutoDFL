@@ -6,48 +6,46 @@ test:
     number: 1
   rounds:
    - label: warm-up (ignore results)
-     txNumber: 1000
+     txNumber: 2500
      rateControl:
        type: maximum-rate
        opts:
-         tps: 370
-         step: 20
+         tps: 1500
+         step: 100
          sampleInterval: 10
          includeFailed: true
      workload:
-       module: workload/calculateObjectiveReputation.js
+       module: workload/calculateSubjectiveReputation.js
        arguments:
         contract: ManageReputation
         num: 1
    - label: second round
-     txNumber: 1000
+     txNumber: 2500
      rateControl:
        type: maximum-rate
        opts:
-         tps: 370
-         step: 20
+         tps: 1500
+         step: 100
          sampleInterval: 10
          includeFailed: true
      workload:
-       module: workload/calculateObjectiveReputation.js
+       module: workload/calculateSubjectiveReputation.js
        arguments:
         contract: ManageReputation
         num: 2
    - label: second round
-     txNumber: 1000
+     txNumber: 2500
      rateControl:
        type: maximum-rate
        opts:
-         tps: 370
-         step: 20
+         tps: 1500
+         step: 100
          sampleInterval: 10
          includeFailed: true
      workload:
-       module: workload/calculateObjectiveReputation.js
+       module: workload/calculateSubjectiveReputation.js
        arguments:
         contract: ManageReputation
         num: 3
 
-
-    
-    
+  

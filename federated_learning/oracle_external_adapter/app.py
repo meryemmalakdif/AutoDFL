@@ -86,7 +86,6 @@ async def call_adapter_async():
     trainers = trainers.split("-")
 
     # here is the local models weights
-    # for each local update calculate the model's accuracy and then the marginal gain 
     local_cid = local_models_hashes.split("-")
 
     if int(round)==0:
@@ -100,77 +99,72 @@ async def call_adapter_async():
     all_weights = []
 
 
-    for i,c in enumerate(local_cid):
-        if (trainers[i]!="0xA13c10C0D5bd6f79041B9835c63f91de35A15883" and int(round)%2==0) or int(round)%2!=0:
-            # simulate senarios of behaviours
-            ## first senario a malicious trainer takes the previous global model's weights and slightly changes them 
-            if int(round)!=0 and trainers[i] == "0x0D43eB5B8a47bA8900d84AA36656c92024e9772e":
-                all_weights.append(np.array(perturb_array(previous_gm_weights, 25.3)))
-            else:
-                weights = get_model_weights(c)
-
-            # weights = weights.decode()
-
-            # print("Shape of weights_array:", type(weights))
-            # # weights_array = pickle.loads(weights)
-            # weights_list = eval(weights)
-
-            # # Convert the list to a NumPy array
-            # weights = np.array(weights_list)
-
-            # # Now you can access the shape
-            # print("Shape of weights:", weights.shape)
-
-            # random_weights = np.random.randn(*weights.shape)
-
-            # # Check for NaN values
-            # if np.isnan(random_weights).any():
-            #     print("Random weights contain NaN values!")
-            # else:
-            #     print("Random weights generated successfully.")
-            # with open('mimi.txt', 'a') as f:
-            #     f.write(f"papa : {random_weights}\n") 
-
-            # print("Shape of weights_array:", weights.shape)
-
-            # with open('mimi.txt', 'a') as f:
-            #     f.write(f" {trainers[i]} : {weights.decode()}\n") 
-                weights = weights.decode()            
-                weights = np.array(ast.literal_eval(weights))
-
-                all_weights.append(weights)
-        else:
-            if int(round)%2 == 0:
-                all_weights.append([])
-
-
-
-## normal senario where every trainer contributes honestly
     # for i,c in enumerate(local_cid):
+    #     if (trainers[i]!="0xA13c10C0D5bd6f79041B9835c63f91de35A15883" and int(round)%2==0) or int(round)%2!=0:
+    #         # simulate senarios of behaviours
+    #         ## first senario a malicious trainer takes the previous global model's weights and slightly changes them 
+    #         if int(round)!=0 and trainers[i] == "0x0D43eB5B8a47bA8900d84AA36656c92024e9772e":
+    #             all_weights.append(np.array(perturb_array(previous_gm_weights, 25.3)))
+    #         else:
+    #             weights = get_model_weights(c)
+
+    #         # weights = weights.decode()
+
+    #         # print("Shape of weights_array:", type(weights))
+    #         # # weights_array = pickle.loads(weights)
+    #         # weights_list = eval(weights)
+
+    #         # # Convert the list to a NumPy array
+    #         # weights = np.array(weights_list)
+
+    #         # # Now you can access the shape
+    #         # print("Shape of weights:", weights.shape)
+
+    #         # random_weights = np.random.randn(*weights.shape)
+
+    #         # # Check for NaN values
+    #         # if np.isnan(random_weights).any():
+    #         #     print("Random weights contain NaN values!")
+    #         # else:
+    #         #     print("Random weights generated successfully.")
+    #         # with open('mimi.txt', 'a') as f:
+    #         #     f.write(f"papa : {random_weights}\n") 
+
+    #         # print("Shape of weights_array:", weights.shape)
+
+    #         # with open('mimi.txt', 'a') as f:
+    #         #     f.write(f" {trainers[i]} : {weights.decode()}\n") 
+    #             weights = weights.decode()            
+    #             weights = np.array(ast.literal_eval(weights))
+
+    #             all_weights.append(weights)
+    #     else:
+    #         if int(round)%2 == 0:
+    #             all_weights.append([])
+
+
+
+# normal senario where every trainer contributes honestly
+    for i,c in enumerate(local_cid):
         
-    #     weights = get_model_weights(c)
-    #     weights = weights.decode()            
-    #     weights = np.array(ast.literal_eval(weights))
+        weights = get_model_weights(c)
+        weights = weights.decode()    
+        weights = np.array(ast.literal_eval(weights))
         
 
 
-    #     all_weights.append(weights)
+        all_weights.append(weights)
 
     scores = []
     interaction_type = []
 
     
     trainers =[]
-    if evaluation_method == "group_instance_deletion":
-        trainers, scores, loss_results = delete_instance_based_evaluation(trainers, model , validation_loader, criterion, all_weights)
-    elif evaluation_method == "similarity":
+    if evaluation_method == "similarity":
         scores = weights_similarity_based_evaluation(trainers,all_weights,global_model_hash) 
-    elif evaluation_method == "marginal_gain":
-        scores  = marginal_gain(trainers, all_weights, model , validation_loader, criterion,global_model_hash)
     elif evaluation_method == "accuracy":
         scores , interaction_type  = accuracy_based(all_weights, model1 , validation_loader, criterion)
 
-    print(scores)
 
     
 
@@ -197,7 +191,8 @@ async def call_adapter_async_aggregation():
     local_models_hashes=data["data"]["local_models"]
     scores=data["data"]["scores"]
     global_model_hash=data["data"]["global_model_hash"]
-    print(data["data"])
+    global_weights_hash=data["data"]["global_weights_hash"]
+    round=data["data"]["round"]
 
 
     weights_loader = IpfsWeightsLoader()
@@ -205,20 +200,48 @@ async def call_adapter_async_aggregation():
     # getting the trainers addresses
     scores = scores.split("-")
     # here is the local models weights
-    # for each local update calculate the model's accuracy and then the marginal gain 
     local_cid = local_models_hashes.split("-")
     all_weights = []
+    previous_gm_weights = []
+    if int(round)!=0:
+        previous_gm_weights = weights_loader.load(global_weights_hash) 
+
+    # for i,c in enumerate(local_cid):
+    #     if (i==0 or i==2 ):
+    #         if int(round)!=0:
+    #             all_weights.append(np.array(random_model(previous_gm_weights)).tolist())
+    #         else:
+    #             all_weights.append(np.array([]).tolist())
+    #     elif (i==1 or i==3 or i==5 or i==4):
+    #         weights = get_model_weights(c)
+    #         weights = weights.decode()            
+    #         weights = np.array(ast.literal_eval(weights))
+
+    #         all_weights.append(weights.tolist())
+    #     else:
+    #         if int(round)%2==0:
+    #          all_weights.append(np.array([]).tolist())
+    #         else:
+    #             weights = get_model_weights(c)
+    #             weights = weights.decode()            
+    #             weights = np.array(ast.literal_eval(weights))
+
+    #             all_weights.append(weights.tolist())    
+
+
+
+# good behaviour
     for c in local_cid:
         weights = get_model_weights(c)
         weights = np.array(ast.literal_eval(weights.decode()))
         
         all_weights.append(weights.tolist())
 
+
+
     model = model_loader.load(global_model_hash) 
     score_index = 0
-    print("before first ",scores)
     for element in scores:
-        print("the element ",element)
         scores[score_index] = int(element)
         score_index+=1
 
@@ -267,12 +290,8 @@ async def call_adapter_async_preRep():
     accuracies = accuracies.split("-")
 
     sorted_trainers ,  sorted_acc   = sort_scores(accuracies,trainers)
-    print("sorted_trainers ",sorted_trainers)
-    print('sorted_acc ' , sorted_acc)
     sorted_trainers = '-'.join(sorted_trainers)
     # sorted_acc = '-'.join(sorted_acc)
-    print("sorted_trainers ",sorted_trainers)
-    print('sorted_acc ' , sorted_acc)
 
   
     
@@ -319,39 +338,6 @@ def calculate_weighted_average(data):
 
 
 
-def delete_instance_based_evaluation(trainers, model , test_dataloader, criterion, submissions):
-    accuracy_results = []
-    loss_results = []
-    for i in range(len(submissions)):
-      evaluate_single_submission = evaluate_one_submission(model , test_dataloader, criterion, submissions, i)
-      accuracy_results.append(evaluate_single_submission['accuracy_gain'])
-      loss_results.append(evaluate_single_submission['loss_difference'])
-    # later when u store these on the blockchain u need to make them int 
-    # accuracy_results = floats_to_ints(accuracy_results)
-    # loss_results = floats_to_ints(loss_results)
-    return trainers, accuracy_results, loss_results
-
-def evaluate_one_submission(model , test_dataloader, criterion, submissions,submission_indice):
-    # Exclude client's submission from the submissions 
-    submissions_excluded = [submission for idx, submission in enumerate(submissions) if idx != submission_indice]
-
-    # aggregate while considering the client weights 
-    global_model_weights = aggregate(submissions , Model(model).count)
-    model.set_weights(model,global_model_weights)
-    # calculate accuracy of the global model including the client weights
-    results = validate(model , test_dataloader, criterion)
-    # aggregating while excluding the client weights
-    global_model_weights_excluded = aggregate(submissions_excluded,Model(model).count)
-    model.set_weights(model,global_model_weights_excluded)
-    # calculate accuracy of the global model excluding the client weights
-    results_excluded = validate(model , test_dataloader, criterion)
-
-    # calculate the difference in accuracy and loss
-    accuracy_gain = results['accuracy'] - results_excluded['accuracy']
-    loss_difference = results['average_loss'] - results_excluded['average_loss']
-    return {'accuracy_gain': accuracy_gain, 'loss_difference': loss_difference}
-
-
 def aggregate(submissions,model_size):
     samples = [62,69,43]
     # the impact a specific model update has when aggregating is measured based on its data size
@@ -390,53 +376,6 @@ def weighted_fed_avg(submissions, model_size, avg_weights):
       new_weights += np.array(submission) * (avg_weights[i] / total_weights)
   return new_weights
 
-
-def marginal_gain(trainers, submissions, model , test_dataloader, criterion, global_model_hash):
-    # Gets the accuracy from the previous round's global model
-    last_accuracy = calculate_accuracy(model , test_dataloader, criterion)
-    c = {}
-    for i, submission in enumerate(submissions):
-        trainer = trainers[i]
-      # self.c a storage for each trainer's cumulative marginal gain
-      # cumulative marginal gain is used to encourage stable and long-term improvement and not only occasional good performance
-        if trainer not in c:
-        # its the trainer's first time
-            c[trainer] = 0
-        if submission.any():
-            model.set_weights(model,submission)
-            local_model_accuracy = calculate_accuracy(model , test_dataloader, criterion)
-            with open('yep.txt', 'a') as f:
-                f.write(f"{local_model_accuracy} {last_accuracy}\n") 
-            c[trainer] += local_model_accuracy - last_accuracy
-
-    # gives the score based on the marginal accuracy
-    #scores = [0 if self.c[trainer] < 0 else self.c[trainer] for trainer in trainers]
-    scores = [c[trainer] for trainer in trainers]
-
-    weights_loader = IpfsWeightsLoader()
-
-    model_loader = IpfsModelLoader(weights_loader)
-    model = model_loader.load(global_model_hash) 
-    fed_avg_aggregator = aggregation_algorithms.FedAvgAggregator(ModelLoaders.Model(model).count, weights_loader)
-
-    adjusted_normalized_scores = fed_avg_aggregator.calculate_adjusted_min_max_normalized_scores_marginal_gain(scores)
-
-    
-
-    converted_adjusted_normalized_scores = [float_to_int(value) for value in adjusted_normalized_scores]
-    # with open('mimi.txt', 'a') as f:
-    #     f.write(f"the original scores  : {scores}\n") 
-    #     f.write(f"the normalized similarity scores  : {normalized_scores}\n") 
-    #     f.write(f"the adjusted normalized similarity scores  : {adjusted_normalized_scores}\n") 
-    #     f.write(f"the converted adjusted normalized similarity scores  : {converted_adjusted_normalized_scores}\n") 
-
-
-
-    return converted_adjusted_normalized_scores
-
-    # # convert the scores into int
-    # scores = [float_to_int(value) for value in scores]
-    # return trainers, scores , []
 
 
 
@@ -557,7 +496,6 @@ def limitcomma(value, limit=2):
 
 # gets smth stored on ipfs using its hash
 def get_model_weights(hash):
-    print("raby  ",hash)
 
     #client = ipfshttpclient.connect(host='localhost', port=5001)
     client = ipfshttpclient.connect('/ip4/0.0.0.0/tcp/5001')
@@ -588,6 +526,12 @@ def perturb_array(original_array, perturbation_factor):
         new_weight = weight + perturbation
         perturbed_array.append(new_weight)
     return perturbed_array
+
+
+def random_model(original_array):
+    # Generate random weights with the same length as original_array
+    random_weights = [random.uniform(0, 1) for _ in range(len(original_array))]
+    return random_weights
 
 
 def calculate_differences(accuracies):

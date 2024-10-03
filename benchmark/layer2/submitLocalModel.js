@@ -14,231 +14,6 @@ const abi = [
     "type": "constructor"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "param1",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "param2",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "param3",
-        "type": "string"
-      }
-    ],
-    "name": "AllAggregationsSubmitted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "taskId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "round",
-        "type": "uint256"
-      }
-    ],
-    "name": "AllWeightSubmitted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "task",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "round",
-        "type": "uint256"
-      },
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "trainer",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "score",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "behaviour",
-            "type": "uint256"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct MainContract.Score[]",
-        "name": "scores",
-        "type": "tuple[]"
-      }
-    ],
-    "name": "EvaluationDone",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "taskId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "modelCID",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "infoCID",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      }
-    ],
-    "name": "TaskPublished",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "trainingAccuracy",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "testingAccuracy",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "trainingDataPoints",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "weights",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct MainContract.Update",
-        "name": "submission",
-        "type": "tuple"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "trainer",
-        "type": "address"
-      }
-    ],
-    "name": "WeightSubmitted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "aggregatorIsRegistered",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "round",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "roundsNumber",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "globalModelWeightsCID",
-        "type": "string"
-      }
-    ],
-    "name": "globalModelUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [],
-    "name": "reachedAllowedTrainers",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "name": "startTrainingRound",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -248,11 +23,6 @@ const abi = [
       {
         "internalType": "string",
         "name": "globalModelWeightsCID",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_state",
         "type": "string"
       }
     ],
@@ -280,78 +50,6 @@ const abi = [
         "internalType": "uint256",
         "name": "_reputation",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "aggregations",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "task",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      }
-    ],
-    "name": "aggregationsTask",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "aggregators",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -403,74 +101,6 @@ const abi = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "trainer",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "rounds",
-            "type": "uint256[]"
-          }
-        ],
-        "internalType": "struct MainContract.Item[]",
-        "name": "array",
-        "type": "tuple[]"
-      },
-      {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      }
-    ],
-    "name": "filterTrainer",
-    "outputs": [
-      {
-        "internalType": "int256",
-        "name": "",
-        "type": "int256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getAggregators",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getAggregatorsForTask",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "getAllReputations",
     "outputs": [
@@ -487,7 +117,7 @@ const abi = [
             "type": "uint256"
           }
         ],
-        "internalType": "struct MainContract.Trainer[]",
+        "internalType": "struct BusinessLogic.Trainer[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -522,28 +152,8 @@ const abi = [
             "type": "address"
           },
           {
-            "internalType": "bool",
-            "name": "isPublished",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isCompleted",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerified",
-            "type": "bool"
-          },
-          {
             "internalType": "address[]",
             "name": "trainers",
-            "type": "address[]"
-          },
-          {
-            "internalType": "address[]",
-            "name": "aggregators",
             "type": "address[]"
           },
           {
@@ -567,18 +177,8 @@ const abi = [
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "requiredAggregators",
-            "type": "uint256"
-          },
-          {
             "internalType": "address[]",
             "name": "registeredTrainers",
-            "type": "address[]"
-          },
-          {
-            "internalType": "address[]",
-            "name": "registeredAggregators",
             "type": "address[]"
           },
           {
@@ -587,7 +187,7 @@ const abi = [
             "type": "string"
           }
         ],
-        "internalType": "struct MainContract.Task[]",
+        "internalType": "struct BusinessLogic.Task[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -647,24 +247,6 @@ const abi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getRoundForTraining",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -680,102 +262,24 @@ const abi = [
     "name": "getRoundScores",
     "outputs": [
       {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_trainer",
-        "type": "address"
-      }
-    ],
-    "name": "getScoreWorker",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "task_trainer",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      }
-    ],
-    "name": "getSingleUpdate",
-    "outputs": [
-      {
         "components": [
           {
-            "internalType": "uint256",
-            "name": "trainingAccuracy",
-            "type": "uint256"
+            "internalType": "address",
+            "name": "trainer",
+            "type": "address"
           },
           {
             "internalType": "uint256",
-            "name": "testingAccuracy",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "trainingDataPoints",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "weights",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
+            "name": "score",
             "type": "uint256"
           }
         ],
-        "internalType": "struct MainContract.Update",
+        "internalType": "struct BusinessLogic.Score[]",
         "name": "",
-        "type": "tuple"
+        "type": "tuple[]"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -811,28 +315,8 @@ const abi = [
             "type": "address"
           },
           {
-            "internalType": "bool",
-            "name": "isPublished",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isCompleted",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerified",
-            "type": "bool"
-          },
-          {
             "internalType": "address[]",
             "name": "trainers",
-            "type": "address[]"
-          },
-          {
-            "internalType": "address[]",
-            "name": "aggregators",
             "type": "address[]"
           },
           {
@@ -856,18 +340,8 @@ const abi = [
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "requiredAggregators",
-            "type": "uint256"
-          },
-          {
             "internalType": "address[]",
             "name": "registeredTrainers",
-            "type": "address[]"
-          },
-          {
-            "internalType": "address[]",
-            "name": "registeredAggregators",
             "type": "address[]"
           },
           {
@@ -876,7 +350,7 @@ const abi = [
             "type": "string"
           }
         ],
-        "internalType": "struct MainContract.Task",
+        "internalType": "struct BusinessLogic.Task",
         "name": "",
         "type": "tuple"
       }
@@ -885,16 +359,22 @@ const abi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getTrainers",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
+        "internalType": "uint256",
+        "name": "_taskId",
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view",
+    "name": "getTaskState",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -906,30 +386,6 @@ const abi = [
       }
     ],
     "name": "getTrainersForTask",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      }
-    ],
-    "name": "getTrainersForTaskRound",
     "outputs": [
       {
         "internalType": "address[]",
@@ -961,87 +417,12 @@ const abi = [
         "type": "address[]"
       },
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "trainingAccuracy",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "testingAccuracy",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "trainingDataPoints",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "weights",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct MainContract.Update[]",
+        "internalType": "string[]",
         "name": "",
-        "type": "tuple[]"
+        "type": "string[]"
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address[]",
-        "name": "taskTrainers",
-        "type": "address[]"
-      }
-    ],
-    "name": "gettestit",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "god",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "trainer",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1055,38 +436,19 @@ const abi = [
         "internalType": "address",
         "name": "_addr",
         "type": "address"
-      }
-    ],
-    "name": "interactionTaskPublisherTrainer",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "taskId",
+        "type": "uint256"
       }
     ],
-    "name": "isAggregatorForTask",
+    "name": "historicalInteractions",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1106,30 +468,6 @@ const abi = [
       }
     ],
     "name": "isInAddressArray",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "arr",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "look",
-        "type": "uint256"
-      }
-    ],
-    "name": "isInIntArray",
     "outputs": [
       {
         "internalType": "bool",
@@ -1167,55 +505,50 @@ const abi = [
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "taskId",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "trainingAccuracy",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "trainingDataPoints",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "weights",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BusinessLogic.Update[]",
+        "name": "taskIds",
+        "type": "tuple[]"
       },
       {
-        "internalType": "address",
-        "name": "trainerAddress",
-        "type": "address"
-      }
-    ],
-    "name": "isTrainerInTask",
-    "outputs": [
+        "internalType": "uint256[]",
+        "name": "taskPublishers",
+        "type": "uint256[]"
+      },
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
+        "internalType": "uint256[]",
+        "name": "scores",
+        "type": "uint256[]"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "model",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "multipleSubmitUpdate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "taskId",
+        "type": "uint256"
+      },
       {
         "internalType": "string",
         "name": "_modelCID",
@@ -1238,26 +571,6 @@ const abi = [
       }
     ],
     "name": "publishTask",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "registerAggregator",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      }
-    ],
-    "name": "registerAggregatorTask",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1287,25 +600,6 @@ const abi = [
     "name": "registerTrainerTask",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "registeredAggregators",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1347,32 +641,6 @@ const abi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "round",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "roundPhase",
-    "outputs": [
-      {
-        "internalType": "enum MainContract.RoundPhase",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -1401,64 +669,6 @@ const abi = [
         "internalType": "uint256",
         "name": "score",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "behaviour",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "selectedAggregators",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "selectedTrainers",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -1491,80 +701,11 @@ const abi = [
       },
       {
         "internalType": "address[]",
-        "name": "taskAggregators",
-        "type": "address[]"
-      }
-    ],
-    "name": "setTaskAggregators",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address[]",
-        "name": "taskTrainers",
-        "type": "address[]"
-      }
-    ],
-    "name": "setTaskRoundTrainers",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address[]",
         "name": "taskTrainers",
         "type": "address[]"
       }
     ],
     "name": "setTaskTrainers",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_weights",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "task",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address[]",
-        "name": "task_aggregators",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      }
-    ],
-    "name": "submitAggregation",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1592,19 +733,9 @@ const abi = [
             "internalType": "uint256",
             "name": "score",
             "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "behaviour",
-            "type": "uint256"
           }
         ],
-        "internalType": "struct MainContract.Score[]",
+        "internalType": "struct BusinessLogic.Score[]",
         "name": "_scores",
         "type": "tuple[]"
       }
@@ -1625,11 +756,6 @@ const abi = [
           },
           {
             "internalType": "uint256",
-            "name": "testingAccuracy",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "trainingDataPoints",
             "type": "uint256"
           },
@@ -1637,14 +763,9 @@ const abi = [
             "internalType": "string",
             "name": "weights",
             "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
           }
         ],
-        "internalType": "struct MainContract.Update",
+        "internalType": "struct BusinessLogic.Update",
         "name": "modelUpdate",
         "type": "tuple"
       },
@@ -1652,11 +773,6 @@ const abi = [
         "internalType": "uint256",
         "name": "task",
         "type": "uint256"
-      },
-      {
-        "internalType": "address[]",
-        "name": "task_trainers",
-        "type": "address[]"
       },
       {
         "internalType": "uint256",
@@ -1667,53 +783,6 @@ const abi = [
     "name": "submitUpdate",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "modelUpdate",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "task",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      }
-    ],
-    "name": "submitUpdatee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      }
-    ],
-    "name": "taskParticipationLevel",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1772,65 +841,6 @@ const abi = [
         "type": "uint256"
       }
     ],
-    "name": "taskks",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "taskId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "modelCID",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "infoCID",
-        "type": "string"
-      },
-      {
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "globalModelWeightsCID",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "currentRound",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "maxRounds",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "state",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "requiredTrainers",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
     "name": "tasks",
     "outputs": [
       {
@@ -1854,21 +864,6 @@ const abi = [
         "type": "address"
       },
       {
-        "internalType": "bool",
-        "name": "isPublished",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "isCompleted",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "isVerified",
-        "type": "bool"
-      },
-      {
         "internalType": "string",
         "name": "globalModelWeightsCID",
         "type": "string"
@@ -1889,11 +884,6 @@ const abi = [
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "requiredAggregators",
-        "type": "uint256"
-      },
-      {
         "internalType": "string",
         "name": "state",
         "type": "string"
@@ -1906,23 +896,26 @@ const abi = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_taskId",
+        "name": "_number",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address[]",
-        "name": "taskTrainers",
-        "type": "address[]"
       }
     ],
-    "name": "testit",
+    "name": "test",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "testing",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1958,6 +951,35 @@ const abi = [
       }
     ],
     "name": "totalNumberOfTasksWithPublisher",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_publisher",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "taskId",
+        "type": "uint256"
+      }
+    ],
+    "name": "totalNumberOfTasksWithPublisherTask",
     "outputs": [
       {
         "internalType": "uint256",
@@ -2051,94 +1073,12 @@ const abi = [
       },
       {
         "internalType": "uint256",
-        "name": "testingAccuracy",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "trainingDataPoints",
         "type": "uint256"
       },
       {
         "internalType": "string",
         "name": "weights",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "task",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_round",
-        "type": "uint256"
-      }
-    ],
-    "name": "updatesTask",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "updatess",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "weights",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
         "type": "string"
       }
     ],
@@ -2152,7 +1092,7 @@ if (!PRIVATE_KEY)
   throw "⛔️ Private key not detected! Add it to the .env file!";
 
 // Address of the contract on zksync testnet
-const CONTRACT_ADDRESS = "0x4abF2b3Efd541b01f8FfFDF4C4743237149e6D6b";
+const CONTRACT_ADDRESS = "0x7fE9225F90f30c313b1E56F3092B710318a8Be82";
 
 if (!CONTRACT_ADDRESS) throw "⛔️ Contract address not provided";
 
@@ -2176,32 +1116,27 @@ async function main() {
   );
 
   const startTime = new Date().getTime();
-  var data = fs.readFileSync("../BusinessLogic-benchmarks/workload/submitUpdate.json");
+  var data = fs.readFileSync("./random_data.json");
   var data= JSON.parse(data);
   let currentNonce = await wallet.getNonce();
   currentNonce;
   let transactionPromises = [];
-  numTransactions = 100;
+  numTransactions = 20;
 
-  const updates = [{
-    trainingAccuracy: 0.9, 
-    testingAccuracy: 0.8, 
-    trainingDataPoints: 17, 
-    weights: "some_hash", 
-    timestamp: 1724045954183
-}] ;
+  
+
 
   for (let i = 0; i < numTransactions ; i++) {
 
     let task = data[i].task ; 
-    let trainers = data[i].trainers ; 
+    let update = data[i].update ; 
     let round = data[i].round ; 
-    var tx = await contract.submitUpdatee("some_hash", task, round );
+    var tx = await contract.test(task );
 
     // transactionPromises.push(tx);
 
   }
-  console.log("Waiting for transactions to be mined...");
+  console.log("Waiting for transactions to be mined..."); 
   // const transactions = await Promise.all(transactionPromises);
 
   // console.log("Checking transaction receipts...");
