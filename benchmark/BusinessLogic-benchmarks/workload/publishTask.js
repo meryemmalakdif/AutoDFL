@@ -41,12 +41,12 @@ class StoreWorkload extends WorkloadModuleBase {
 
         
         let workload = [];
-        let roundIndexes = [0,800,1600,2400];
+        let roundIndexes = [0,2000,4000,6000];
         // let roundIndexes = [0,200,400,600,1100,1600,2100];
 
         if(!isInit){
             isInit = true;
-            var data = fs.readFileSync("./workload/publishTaskWorkload.json");
+            var data = fs.readFileSync("./workload/scripts/taskData.json");
             data= JSON.parse(data);
         
             data.forEach(item => {
@@ -64,17 +64,10 @@ class StoreWorkload extends WorkloadModuleBase {
             let _infoCID = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]]._infoCID ; 
             let maxRounds = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].maxRounds ; 
             let requiredTrainers = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].requiredTrainers ; 
-
-            // let task = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].task ; 
-            // let trainers = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].trainers ; 
-            // let rounds = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].round ; 
-
-
-
             let args = {
                 contract :this.roundArguments.contract,
                 verb: 'publishTask',
-                args: [i, _modelCID,_infoCID,maxRounds,requiredTrainers],
+                args: [_modelCID,_infoCID,maxRounds,requiredTrainers],
                 readOnly: false,
                 // nonce: currentNonce, // Use the incremented nonce
                 gasPrice: '200000' // Set a suitable gas pr  1000000000

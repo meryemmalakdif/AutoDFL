@@ -8,9 +8,9 @@ def generate_random_hash():
 
 # Create an array of 25 elements with random data
 data = []
-for task_id in range(100):  # Loop from 0 to 24 for 25 elements
+for task_id in range(10000):  # Loop from 0 to 24 for 25 elements
     element = {
-        "task": task_id+41099999999,  # Use the loop index as the task ID
+        "task": task_id,  # Use the loop index as the task ID
         "update": {
             "trainingAccuracy": random.randint(0, 100),  # Random accuracy between 0 and 100
             "trainingDataPoints": random.randint(100, 1000),  # Random data points between 100 and 1000

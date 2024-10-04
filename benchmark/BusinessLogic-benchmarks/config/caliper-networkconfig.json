@@ -18,7 +18,8 @@
             "address":"0x1E2a37F8Cd08f18Cd1A908D43CF53F1efe075e86",
               "estimateGas": true,
               "gas": {
-                "submitUpdate": 203960
+                "submitUpdate": 203960,
+                "publishTask": 203960
                 
               },
               "abi": [
@@ -37,11 +38,6 @@
                     {
                       "internalType": "string",
                       "name": "globalModelWeightsCID",
-                      "type": "string"
-                    },
-                    {
-                      "internalType": "string",
-                      "name": "_state",
                       "type": "string"
                     }
                   ],
@@ -749,11 +745,6 @@
                       "type": "uint256"
                     },
                     {
-                      "internalType": "address[]",
-                      "name": "task_trainers",
-                      "type": "address[]"
-                    },
-                    {
                       "internalType": "uint256",
                       "name": "_round",
                       "type": "uint256"
@@ -904,6 +895,35 @@
                     }
                   ],
                   "name": "totalNumberOfTasksWithPublisher",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "addr",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "_publisher",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "taskId",
+                      "type": "uint256"
+                    }
+                  ],
+                  "name": "totalNumberOfTasksWithPublisherTask",
                   "outputs": [
                     {
                       "internalType": "uint256",
