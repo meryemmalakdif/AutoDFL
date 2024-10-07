@@ -164,19 +164,6 @@ contract BusinessLogic {
         return interactionsTrainerWithPublisher[_addr][_taskPublisher];
     }
 
-
-    // all the interactions a trainer had in the system including all the tasks
-    function totalParticipationLevel(address addr) public view returns (uint256) {
-        require(registeredTrainers[addr] == true,"Trainer is not register in the system");
-        uint256 _total = 0;
-        for (uint i = 0; i < tasks.length; i++) {
-            if (isTrainerForTask(i, addr) == true) {
-                _total += tasks[i].maxRounds;
-            }
-        }
-        return _total;
-    }
-
     // total number of the tasks a trainer has participated in
     function totalNumberOfTasks(address addr) public view returns (uint256) {
               uint256 _totalTasks = 0;
@@ -191,33 +178,6 @@ contract BusinessLogic {
         return _totalTasks;
     }
 
-    // total number of the tasks of a specific task publisher a trainer has participated in
-    function totalNumberOfTasksWithPublisher(address addr,address _publisher) public view returns (uint256) {
-        require(registeredTrainers[addr] == true,"Trainer is not register in the system");
-        uint256 _totalTasks = 0;
-        for (uint i = 0; i < tasks.length; i++) {
-            if (tasks[i].publisher == _publisher && isTrainerForTask(i, addr) == true) {
-                _totalTasks += 1;
-            }
-        }
-        return _totalTasks;
-    }
-
-        // total number of the tasks of a specific task publisher a trainer has participated in excepted the current task
-    function totalNumberOfTasksWithPublisherTask(address addr,address _publisher, uint256 taskId) public view returns (uint256) {
-                uint256 _totalTasks = 0;
-
-        if(registeredTrainers[addr] == true)
-        {
-            for (uint i = 0; i < tasks.length; i++) {
-            if (tasks[i].publisher == _publisher && isTrainerForTask(i, addr) == true && tasks[i].taskId != taskId) {
-                _totalTasks += 1;
-            }
-        
-        }
-        }
-        return _totalTasks;
-    }
 
         // total number of interactions a publisher have
     function publisherTotalInteractions(address _publisher) public view returns (uint256) {
@@ -269,7 +229,7 @@ contract BusinessLogic {
         }
     }
 
-    function submitScore(uint _task,uint _round,Score[] memory _scores) public  {
+    function submitScore(uint _task,uint _round,Score[] memory _scores) public   {
         for (uint i = 0; i < _scores.length; i++) {
             scores[_task][_round].push(_scores[i]);
         }
@@ -289,7 +249,7 @@ contract BusinessLogic {
         return trainers;
     }
 
-    function getUpdatesForAggregationTask(uint taskId,uint _round) public  returns (string[] memory) {
+    function getUpdatesForAggregationTask(uint taskId,uint _round) public  returns (string[] memory)  {
         string[] memory taskUpdates = new string[](tasks[taskId].trainers.length);
         for (uint i = 0; i < tasks[taskId].trainers.length; i++) {
             taskUpdates[i] = updates[taskId][_round][tasks[taskId].trainers[i]].weights;
