@@ -44,13 +44,14 @@ contract ManageReputation {
         uint256[] memory _objectiveRep = new uint256[](_trainers.length);
 
         for (uint j = 0; j < _trainers.length; j++) {
-            // Update for the coming rounds and tasks
-            if ((_scores[j] + 150000000000000000) >= _goodBehaviourThreshold) {
+            // Update for the coming tasks
+            if ((_scores[j] + 150000000000000000) >= _goodBehaviourThreshold && totalRounds[j] >= (_taskDetails.maxRounds/2) ) {
+                // uint256 testValue = _scores[j]
                 _overallPositiveHistory[_taskPublisher][_trainers[j]] += _scores[j] * _taskId;
-                _objectiveRep[j] = (_scale * _scale * totalRounds[j]) / 4;
+                _objectiveRep[j] = (_scale * _scale * totalRounds[j]) / _taskDetails.maxRounds;
             } else {
                 _overallNegativeHistory[_taskPublisher][_trainers[j]] += _scores[j] * _taskId;
-                _objectiveRep[j] = (4 * _scale * _scale * totalRounds[j]) / 40;
+                _objectiveRep[j] = (4 * _scale * _scale * totalRounds[j]) / (_taskDetails.maxRounds*10);
             }
         }
         return (_objectiveRep, _goodBehaviourThreshold);
@@ -66,41 +67,26 @@ contract ManageReputation {
         uint256 _subjectiveRep ;
         uint256 _u;
 
-        uint256 _interactionsTp = 0;
+        uint256 _interactionsTp ;
 
-        address[] memory _allTrainers = taskContractInstance.getAllTrainers();
-        for (uint j = 0; j < _allTrainers.length; j++) {
-            _interactionsTp += taskContractInstance.totalNumberOfTasksWithPublisherTask(_allTrainers[j] ,_taskPublisher, _taskId);
+        _interactionsTp = taskContractInstance.publisherTotalInteractions(_taskPublisher) - _taskDetails.trainers.length;  // the minus is to exclude the current task from the count because the subjective rep only considers historical interactions    
+        // all interactions of a trainer with a publisher excluding the current task 
+        uint256 _interactionsTpTa = taskContractInstance.historicalInteractions(_taskPublisher, _trainer) - 1;
+
+        if (_interactionsTp > 0) {
+            _u = _scale - ((_interactionsTpTa * _scale) / _interactionsTp); 
         }
 
-     
-            // Calculate subjective reputation
-            // a weight of 0.4 is assigned to positive interactions, while a weight of 0.6 is assigned to negative interactions
-            uint256 _interactionsTpTa = taskContractInstance.historicalInteractions(_taskPublisher, _trainer, _taskId);
-
-            if (_interactionsTp > 0) {
-                _u = _scale - ((_interactionsTpTa * _scale) / _interactionsTp); 
-            }
-
-            // The higher weight for negative interactions reflects their more destructive impact, emphasizing the importance of discouraging such behavior among trainers
-            historical = (_scale * _overallPositiveHistory[_taskPublisher][_trainer] * 4) / (_overallPositiveHistory[_taskPublisher][_trainer] * 4 + _overallNegativeHistory[_taskPublisher][_trainer] * 6);
-            _subjectiveRep = historical * (_scale - _u) + (_u * _uncertainty_weight * _scale) / 10;
-        
+        // The higher weight for negative interactions reflects their more destructive impact, emphasizing the importance of discouraging such behavior among trainers
+        historical = (_scale * _overallPositiveHistory[_taskPublisher][_trainer] * 4) / (_overallPositiveHistory[_taskPublisher][_trainer] * 4 + _overallNegativeHistory[_taskPublisher][_trainer] * 6);
+        _subjectiveRep = historical * (_scale - _u) + (_u * _uncertainty_weight * _scale) / 10;
+    
 
         return _subjectiveRep;
     }
-
-    uint256[] public obj;
-    uint256[] public subj;
-    address[] public workers;
-
     // Reputation updates occur at the end of each timeslot, which is composed of multiple training rounds
     function updateReputation(uint _taskId, address[] memory _trainers, uint256[] memory _scores, uint256[] memory totalRounds) public {
-        delete obj;
-        delete subj;
-        delete workers;
         BusinessLogic.Task memory _taskDetails = taskContractInstance.getTaskById(_taskId);
-        address _taskPublisher = _taskDetails.publisher;
         uint256 _prevRep;
         uint256 _newRep;
         uint256 _localRep;
@@ -129,14 +115,10 @@ contract ManageReputation {
                 // If it is the trainer's first interaction with a publisher, it indicates that the trainer has no existing subjective reputation
                 _localRep = _objectiveRep[j];
             }
-            obj.push(_objectiveRep[j]);
-            subj.push(_subjectiveRep);
-            workers.push(_trainers[j]);
-
             // get the previous reputation
             _prevRep = taskContractInstance.getReputation(_trainers[j]);
             // The weights assigned during the reputation update are based on the total interactions of the trainer within the system. As the number of interactions increases, it becomes more challenging to raise the trainer's reputation score.
-            _weight = uint256(calculateTanhLambdaX((int256(taskContractInstance.totalNumberOfTasks(_trainers[j])) / 2 + 55) * 10000000));
+            _weight = uint256(calculateTanhLambdaX((int256(taskContractInstance.totalNumberOfTasks(_trainers[j])) + 54) * 10000000));
             // If the trainer's behavior is judged positively, a higher weight is assigned to their previous reputation.
             // This emphasizes that the reputation score increases gradually, reflecting the consistent hard work and dedication of the trainer
             if (_scores[j] >= _goodBehaviourThreshold && totalRounds[j] >= _taskDetails.maxRounds) {
@@ -152,8 +134,4 @@ contract ManageReputation {
         }
     }
 
-    // View function to return both arrays
-    function getReputationArrays() public view returns (uint256[] memory, uint256[] memory, address[] memory) {
-        return (obj, subj, workers);
-    }
 }

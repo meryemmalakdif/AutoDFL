@@ -15,15 +15,21 @@
         "chainId": 4444,
         "contracts": {
             "ManageReputation":{
-              "address":"0x0E34ACb6427453DB1039262b15Fe15aE94057c03",
+              "address":"0x78b20430e9dCb8b5f035bF6b7520b5E2e047d3eE",
                 "estimateGas": true,
                 "gas": {
                   "calculateObjectiveReputation": 230682,
-                  "calculateSubjectiveReputation": 177463          
+                  "calculateSubjectiveReputation": 230682          
                 },  
                 "abi": [
                   {
-                    "inputs": [],
+                    "inputs": [
+                      {
+                        "internalType": "address",
+                        "name": "_taskContractAddress",
+                        "type": "address"
+                      }
+                    ],
                     "stateMutability": "nonpayable",
                     "type": "constructor"
                   },
@@ -83,11 +89,6 @@
                         "type": "uint256"
                       },
                       {
-                        "internalType": "address",
-                        "name": "_taskPublisher",
-                        "type": "address"
-                      },
-                      {
                         "internalType": "address[]",
                         "name": "_trainers",
                         "type": "address[]"
@@ -128,31 +129,16 @@
                       },
                       {
                         "internalType": "address",
-                        "name": "_taskPublisher",
+                        "name": "_trainer",
                         "type": "address"
-                      },
-                      {
-                        "internalType": "address[]",
-                        "name": "_trainers",
-                        "type": "address[]"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "_interactionsTp",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "_interactionsTpTa",
-                        "type": "uint256[]"
                       }
                     ],
                     "name": "calculateSubjectiveReputation",
                     "outputs": [
                       {
-                        "internalType": "uint256[]",
+                        "internalType": "uint256",
                         "name": "",
-                        "type": "uint256[]"
+                        "type": "uint256"
                       }
                     ],
                     "stateMutability": "nonpayable",
@@ -178,71 +164,91 @@
                     "type": "function"
                   },
                   {
-                    "inputs": [
+                    "inputs": [],
+                    "name": "getReputationArrays",
+                    "outputs": [
                       {
-                        "internalType": "uint256",
-                        "name": "_taskId",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "_taskPublisher",
-                        "type": "address"
+                        "internalType": "uint256[]",
+                        "name": "",
+                        "type": "uint256[]"
                       },
                       {
                         "internalType": "address[]",
-                        "name": "_trainers",
+                        "name": "",
                         "type": "address[]"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "_scores",
-                        "type": "uint256[]"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "totalRounds",
-                        "type": "uint256[]"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "maxRounds",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "_subjectiveRep",
-                        "type": "uint256[]"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "_objectiveRep",
-                        "type": "uint256[]"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "_goodBehaviourThreshold",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "_prevRep",
-                        "type": "uint256[]"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "totalNumberOfTasksWithPublisher",
-                        "type": "uint256[]"
-                      },
-                      {
-                        "internalType": "uint256[]",
-                        "name": "interactions",
-                        "type": "uint256[]"
                       }
                     ],
-                    "name": "updateReputation",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
+                    "stateMutability": "view",
+                    "type": "function"
+                  },
+                  {
+                    "inputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "name": "obj",
+                    "outputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                  },
+                  {
+                    "inputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "name": "subj",
+                    "outputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                  },
+                  {
+                    "inputs": [],
+                    "name": "taskContractInstance",
+                    "outputs": [
+                      {
+                        "internalType": "contract BusinessLogic",
+                        "name": "",
+                        "type": "address"
+                      }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                  },
+                  {
+                    "inputs": [
+                      {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                      }
+                    ],
+                    "name": "workers",
+                    "outputs": [
+                      {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                      }
+                    ],
+                    "stateMutability": "view",
                     "type": "function"
                   }
                 ]

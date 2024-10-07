@@ -1,14 +1,11 @@
 
 import click
-import os
-import json
 # Get the path to the FederatedLearning directory relative to my_script.py
 from FederatedLearning import task_requester
 from FederatedLearning import smart_contract_functions
 from FederatedLearning import ModelLoaders
 from pathlib import Path
-import random
-import string
+
 
 
 @click.command()

@@ -41,12 +41,12 @@ class StoreWorkload extends WorkloadModuleBase {
 
         
         let workload = [];
-        let roundIndexes = [0,2500,5000,7500];
+        let roundIndexes = [0,3000,6000,9000];
         // let roundIndexes = [0,200,400,600,1100,1600,2100];
 
         if(!isInit){
             isInit = true;
-            var data = fs.readFileSync("./workload/subjectiveReputationData.json");
+            var data = fs.readFileSync("./workload/scripts/subj/necessaryDataFiles/SubjData.json");
             data= JSON.parse(data);
         
             data.forEach(item => {
@@ -61,16 +61,14 @@ class StoreWorkload extends WorkloadModuleBase {
 
         for(let i= 0 ; i <  this.roundArguments.txnPerBatch ; i++) {
             this.txIndex++; 
-            let taskId = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].taskId ; 
-            let taskPublisher = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].taskPublisher ; 
-            let trainers = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].trainers ; 
-            let _interactionsTp= myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]]._interactionsTp ; 
-            let _interactionsTpTa = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]]._interactionsTpTa ; 
+            let taskId = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].task ; 
+            let adr = myArray[this.txIndex+roundIndexes[this.roundArguments.num-1]].adr ; 
+            
 
             let args = {
                 contract :this.roundArguments.contract,
                 verb: 'calculateSubjectiveReputation',
-                args: [taskId, taskPublisher,trainers,_interactionsTp,_interactionsTpTa],
+                args: [taskId, adr],
                 readOnly: false,
                 // nonce: currentNonce, // Use the incremented nonce
                 // gasPrice: '20000000000' // Set a suitable gas pr  1000000000

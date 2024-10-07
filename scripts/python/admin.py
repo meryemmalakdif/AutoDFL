@@ -78,15 +78,15 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
 
   while True:
     while True:
-      initial_trainers , local_updates = contract_task.get_updates_task(task,i)
-      if len(initial_trainers)>0:
+      local_updates = contract_task.get_updates_task(task,i)
+      if len(local_updates)>0:
         break
-    with open('performance.txt', 'a') as file:
-      file.write(f" stuck here  \n")   
+
+ 
 
     
     local_hash = "-".join(local_updates)
-    trainers = "-".join(initial_trainers)
+    trainers = "-".join(current_task[4])
 
     if current_task[5]:
       global_model_weights = current_task[5]
@@ -112,7 +112,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
   
 
       
-    result = list(zip(initial_trainers, sc,behaviour))
+    result = list(zip(current_task[4], sc,behaviour))
     
     contract_task.upload_scores(task,current_task[6],result)
     
@@ -121,7 +121,7 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
     models_scores = "-".join(sc)
 
 
-    tx, tx_receipt = contract_layer1.trigger_aggregation_admin(local_hash, models_scores, current_task[1],current_task[5],str(i))
+    tx, tx_receipt = contract_layer1.trigger_aggregation_admin(local_hash, models_scores, current_task[1],current_task[5],str(i),trainers)
     global_model_weights_hash = contract_layer1.get_global_model_weights_hash()
     while global_model_weights_hash == "":
       global_model_weights_hash = contract_layer1.get_global_model_weights_hash()
@@ -132,23 +132,12 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
     if (i+1) != current_task[7]:
       i+=1    
       contract_task.update_task_state(task,"training")
-      while True:
+      time.sleep(10)
+      current_task = contract_task.get_task_byId(task)
+  
+      while current_task[10]!="evaluation":
         time.sleep(10)
-        # get the task details to access the model cid
         current_task = contract_task.get_task_byId(task)
-        if current_task[10] == "training":
-          break
-        contract_task.update_task_state(task,"training")
- 
-      while True:
-        time.sleep(10)
-        # get the task details to access the model cid
-        current_task = contract_task.get_task_byId(task)
-
-
-        if current_task[10] == "evaluation":
-          break
-
     else :  
 
 
@@ -179,7 +168,6 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
         pre_rep = contract_layer1.pre_rep_result() 
         pre_rep_trainers = contract_layer1.pre_rep_result_trainers()
 
-      
       pre_rep_trainers = pre_rep_trainers.split("-")
 
       counts = [0] * len(pre_rep_trainers)
@@ -189,33 +177,20 @@ def main(provider, provider_layer1,  abi, abi_oracle, abi_rep, ipfs, account, pa
           
         for entry in sublist:
           address = entry[0]  # The address is the first element
-          amount = entry[1]   # The second element is the amount
+          amount = entry[1]   # The second element is the accuracy of a trainer's local model
               
-          # Check if the amount is greater than 0
+          # Check if the amount is greater than 0 => the trainer did not skip the round
           if amount > 0:
             index = pre_rep_trainers.index(address)     
             counts[index] += 1
 
-
-      rep_tx, rep_tx_receipt = contract_reputation.update_reputation(task,  pre_rep_trainers ,  pre_rep , counts )
+      contract_reputation.update_reputation(task,  pre_rep_trainers ,  pre_rep , counts )
 
       time.sleep(10)
 
-      obj , subj , workers = contract_reputation.getReputationArrays()
-      with open('performance.txt', 'a') as file:
-        file.write(f" obj {obj} \n")   
-        file.write(f" subj {subj} \n") 
-        file.write(f" workers {workers} \n")  
-     
-      
-    
-      all_reputation = contract_task.get_all_reputation()
 
-      with open('performance.txt', 'a') as file:
-        file.write(f" {all_reputation} \n") 
       contract_task.update_task_state(task,"done")
       break
-
 
 
 

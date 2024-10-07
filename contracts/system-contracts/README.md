@@ -19,4 +19,4 @@ The contract provides the following functionalities:
 
 - `businessLogic.sol`: is a smart contract that facilitates the management of training tasks on the blockchain network. It enables users to create tasks , and trainers to subscribe, interact with tasks, train and submit models in a decentralized manner. its implements the business logic behind the federated learning senario .
 - `manageRep.sol`:  The contract  serves as a component responsible for managing and tracking reputation scores participating in the system. its implement our proposed reputation model . for any extra infos about the formula and its variables , back to the final document report .
-- `libraries/`: Contains the libraries used in the implementation process , you can acces the folder for more details .
+- `libraries/`: Contains necessary libraries used in the implementation process line Match FixedPointMath , you can acces the folder for more details .

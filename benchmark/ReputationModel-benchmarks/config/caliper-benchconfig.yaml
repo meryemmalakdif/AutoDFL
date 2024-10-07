@@ -6,12 +6,12 @@ test:
     number: 1
   rounds:
    - label: warm-up (ignore results)
-     txNumber: 2500
+     txNumber: 3000
      rateControl:
        type: maximum-rate
        opts:
-         tps: 1500
-         step: 100
+         tps: 500
+         step: 5
          sampleInterval: 10
          includeFailed: true
      workload:
@@ -20,12 +20,12 @@ test:
         contract: ManageReputation
         num: 1
    - label: second round
-     txNumber: 2500
+     txNumber: 3000
      rateControl:
        type: maximum-rate
        opts:
-         tps: 1500
-         step: 100
+         tps: 520
+         step: 5
          sampleInterval: 10
          includeFailed: true
      workload:
@@ -33,13 +33,13 @@ test:
        arguments:
         contract: ManageReputation
         num: 2
-   - label: second round
-     txNumber: 2500
+   - label: third round
+     txNumber: 3000
      rateControl:
        type: maximum-rate
        opts:
-         tps: 1500
-         step: 100
+         tps: 550
+         step: 5
          sampleInterval: 10
          includeFailed: true
      workload:

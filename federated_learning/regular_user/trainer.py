@@ -37,14 +37,12 @@ class Trainer:
         return layers, total
 
     def train(self, model, criterion, optimizer, train_loader, val_loader, epochs):
-      print("ydkhol la boucle")
       train_losses = []
       val_losses = []
       train_accs = []
       val_accs = []
 
       for epoch in range(epochs):
-        print("epoch number ",epoch)
         model.train()
         running_loss = 0.0
         correct_train = 0
@@ -83,7 +81,6 @@ class Trainer:
 
           val_loss /= len(val_loader)
           val_acc = correct_val / total_val
-
       print("Training done...")
       return {'train_loss': train_loss, 'val_loss': val_loss, 'train_acc': train_acc, 'val_acc': val_acc}
 

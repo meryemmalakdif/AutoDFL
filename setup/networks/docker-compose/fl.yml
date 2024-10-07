@@ -15,14 +15,8 @@ services:
       - PRIVATEKEY=$PRIVATEKEY
     volumes:
       - '../../../federated_learning/regular_user/mimi.txt:/root/mimi.txt'
-      - '../../../federated_learning/regular_user/results.txt:/root/results.txt'
-      - '../../../federated_learning/regular_user/trainers.txt:/root/trainers.txt'
-      - '../../../federated_learning/regular_user/updates.txt:/root/updates.txt'
-      - '../../../federated_learning/regular_user/clients.txt:/root/clients.txt'
-      - '../../../federated_learning/regular_user/weights.txt:/root/weights.txt'
       - '../../../federated_learning/regular_user/data_manipulation/data:/root/dataset'
       - ../../../artifacts-zk/contracts/system-contracts/$ABI_FILE.sol/$ABI.json:/root/abi.json
-
       - ../../../artifacts/contracts/Oracle-contracts/APIconsumer.sol/APIConsumer.json:/root/abi11.json
 
     extra_hosts:

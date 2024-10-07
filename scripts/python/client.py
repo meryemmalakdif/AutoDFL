@@ -1,10 +1,8 @@
 import click
 import torch.nn as nn
 import torch.optim as optim
-import os
 import time
 from FederatedLearning import trainer
-from FederatedLearning import task_requester
 from FederatedLearning import smart_contract_functions
 from FederatedLearning import utilities
 from FederatedLearning import ModelLoaders

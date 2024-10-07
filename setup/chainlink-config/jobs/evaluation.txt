@@ -4,7 +4,7 @@ name = "evaluation"
 externalJobID = "6868419d-5f6b-42a7-b571-8abfb0c4c6c8"
 forwardingAllowed = false
 maxTaskDuration = "0s"
-contractAddress = "0x4eb76510b2755Cae35Dd4be05b443700A4Ebf5eC"
+contractAddress = "##operator contract address here"
 evmChainID = "9"
 minIncomingConfirmations = 0
 minContractPaymentLinkJuels = "0"
@@ -13,17 +13,14 @@ observationSource = """
                   abi="OracleRequest(bytes32 indexed specId, address requester, bytes32 requestId, uint256 payment, address callbackAddr, bytes4 callbackFunctionId, uint256 cancelExpiration, uint256 dataVersion, bytes data)"
                   data="$(jobRun.logData)"
                   topics="$(jobRun.logTopics)"]
-
     decode_cbor  [type=cborparse data="$(decode_log.data)"]
     fetch        [type=bridge name="ea-bridge" requestData="{\\"id\\": $(jobSpec.externalJobID), \\"data\\": { \\"local_hash\\": $(decode_cbor.local_hash),\\"trainers\\": $(decode_cbor.trainers), \\"model_hash\\": $(decode_cbor.model_hash),  \\"global_weights_hash\\": $(decode_cbor.global_weights_hash), \\"evaluation\\": $(decode_cbor.evaluation) , \\"round\\": $(decode_cbor.round) }}"]
-    parse        [type=jsonparse path="data,scores" data="$(fetch)"]
-    parse_three        [type=jsonparse path="data,behaviour" data="$(fetch)"]
-    
-    encode_data  [type=ethabiencode abi="(bytes32 requestId,uint256[] value,  uint256[] behaviour_value)" data="{\\"requestId\\": $(decode_log.requestId),\\"value\\": $(parse),  \\"behaviour_value\\": $(parse_three) }"]
+    parse        [type=jsonparse path="data,scores" data="$(fetch)"]    
+    encode_data  [type=ethabiencode abi="(bytes32 requestId,uint256[] value)" data="{\\"requestId\\": $(decode_log.requestId),\\"value\\": $(parse)}"]
     encode_tx    [type=ethabiencode
                   abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
                   data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"]
-    submit_tx    [type=ethtx to="0x4eb76510b2755Cae35Dd4be05b443700A4Ebf5eC" data="$(encode_tx)"]
+    submit_tx    [type=ethtx to="##operator contract address here" data="$(encode_tx)"]
 
-    decode_log -> decode_cbor -> fetch -> parse -> parse_three -> encode_data -> encode_tx -> submit_tx
+    decode_log -> decode_cbor -> fetch -> parse -> encode_data -> encode_tx -> submit_tx
 """

@@ -20,8 +20,8 @@ def generate_data(n):
     for _ in range(n):
         _modelCID = generate_random_string(20)
         _infoCID = generate_random_string(20)
-        maxRounds = random.randint(0, 100)
-        requiredTrainers = random.randint(0, 100)
+        maxRounds = 3
+        requiredTrainers = 3
 
         item = {
             "_modelCID": _modelCID,
@@ -34,7 +34,7 @@ def generate_data(n):
     return data
 
 def main():
-    n = 100000  # Number of items to generate
+    n = 1000000  # Number of items to generate
     generated_data = generate_data(n)
 
     # Write to JSON file

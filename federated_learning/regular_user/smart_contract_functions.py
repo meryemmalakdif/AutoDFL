@@ -100,7 +100,6 @@ def get_contract_from_zksync(provider, abi_file, contract_address):
 
 
 def get_abi(filename):
-  print("ya raby ",filename)
   with open(filename) as file:
     contract_json = json.load(file)
   return contract_json['abi']
@@ -173,11 +172,11 @@ class Contract():
     })
     return tx , self.wait_tx(tx,self.private_key)
   
-  def trigger_aggregation_admin(self, local_models, scores, model_hash, weights_hash,round):
+  def trigger_aggregation_admin(self, local_models, scores, model_hash, weights_hash,round,trainers):
     # Load your private key
     account = self.web3.eth.account.from_key(self.private_key)
     # Build and send the transaction
-    tx = self.contract.functions.requestAggregation(local_models, scores, model_hash,weights_hash,round).build_transaction({
+    tx = self.contract.functions.requestAggregation(local_models, scores, model_hash,weights_hash,round,trainers).build_transaction({
         'from': account.address,
         'nonce': self.web3.eth.get_transaction_count(account.address)
     })
@@ -261,7 +260,7 @@ class Contract_zksync():
       # Build and send the transaction
       tx = self.contract.functions.updateTaskState(taskId,state).build_transaction({
           'from': account.address,
-          'nonce': self.zksync_provider.eth.get_transaction_count(account.address)
+          'nonce': self.zksync_provider.eth.get_transaction_count(account.address)+1
       })
       return tx , self.wait_tx(tx,self.private_key)
   

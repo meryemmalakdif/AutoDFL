@@ -12,7 +12,7 @@ services:
          - CALIPER_NETWORKCONFIG=config/caliper-networkconfig.json 
          - CALIPER_FLOW_SKIP_INSTALL=true
         volumes:
-         - ./BusinessLogic-benchmarks:/hyperledger/caliper/workspace
+         - ./ReputationModel-benchmarks:/hyperledger/caliper/workspace
         networks:
         - BCFL
 

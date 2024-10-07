@@ -7,8 +7,7 @@ This folder contains the necessary modules and components for implementing feder
 ## Folder Structure
 
 - **oracle_external_adapter/**
-  - This folder contains the Oracle External Adapter, which allows Chainlink oracles to perform custom functionalities that are not built-in, such as evaluating models and aggregating the results from different trainers. 
-
+  - This folder contains the Oracle External Adapter, which runs through a Python server. It enables Chainlink oracles to perform custom functionalities  that are not built-in, such as evaluating models and aggregating results from different trainers.
 - **regular_user/**
   - Contains components relevant to regular users participating in the federated learning process, allowing them to publish training tasks as task requesters and manage the training of local models as trainers.
 

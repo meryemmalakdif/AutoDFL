@@ -6,45 +6,45 @@ test:
     number: 1
   rounds:
    - label: warm-up (ignore results)
-     txNumber: 10000
+     txNumber: 1
      rateControl:
        type: maximum-rate
        opts:
-         tps: 5750
+         tps: 1
          step: 5
          sampleInterval: 10
          includeFailed: true
      workload:
-       module: workload/submitUpdate.js
+       module: workload/isTrainerForTask.js
        arguments:
         contract: BusinessLogic
         num: 1
-   - label: second round
-     txNumber: 10000
-     rateControl:
-       type: maximum-rate
-       opts:
-         tps: 5750
-         step: 5
-         sampleInterval: 10
-         includeFailed: true
-     workload:
-       module: workload/submitUpdate.js
-       arguments:
-        contract: BusinessLogic
-        num: 2
-   - label: third round
-     txNumber: 10000
-     rateControl:
-       type: maximum-rate
-       opts:
-         tps: 5750
-         step: 5
-         sampleInterval: 10
-         includeFailed: true
-     workload:
-       module: workload/submitUpdate.js
-       arguments:
-        contract: BusinessLogic
-        num: 3
+  #  - label: second round
+  #    txNumber: 1000
+  #    rateControl:
+  #      type: maximum-rate
+  #      opts:
+  #        tps: 575
+  #        step: 5
+  #        sampleInterval: 10
+  #        includeFailed: true
+  #    workload:
+  #      module: workload/setTaskTrainers.js
+  #      arguments:
+  #       contract: BusinessLogic
+  #       num: 2
+  #  - label: third round
+  #    txNumber: 1000
+  #    rateControl:
+  #      type: maximum-rate
+  #      opts:
+  #        tps: 575
+  #        step: 5
+  #        sampleInterval: 10
+  #        includeFailed: true
+  #    workload:
+  #      module: workload/setTaskTrainers.js
+  #      arguments:
+  #       contract: BusinessLogic
+  #       num: 3
   

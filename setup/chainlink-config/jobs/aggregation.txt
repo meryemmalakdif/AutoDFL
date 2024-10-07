@@ -4,7 +4,7 @@ name = "aggregation"
 externalJobID = "4545689b-4d0d-4d23-917f-cdbc5127328c"
 forwardingAllowed = false
 maxTaskDuration = "0s"
-contractAddress = "0x4eb76510b2755Cae35Dd4be05b443700A4Ebf5eC"
+contractAddress = "0xD4DC4279550c46aC7C77B3F85d63641C1F48E9d7"
 evmChainID = "9"
 minIncomingConfirmations = 0
 minContractPaymentLinkJuels = "0"
@@ -22,7 +22,7 @@ observationSource = """
     encode_tx    [type=ethabiencode
                   abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
                   data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"]
-    submit_tx    [type=ethtx to="0x4eb76510b2755Cae35Dd4be05b443700A4Ebf5eC" data="$(encode_tx)"]
+    submit_tx    [type=ethtx to="0xD4DC4279550c46aC7C77B3F85d63641C1F48E9d7" data="$(encode_tx)"]
 
     decode_log -> decode_cbor -> fetch -> parse -> parse_two -> encode_data -> encode_tx -> submit_tx
 """

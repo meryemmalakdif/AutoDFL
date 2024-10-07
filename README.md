@@ -1,3 +1,5 @@
+### Welcome to AutoBFL: A Scalable and Automated Reputation-Aware Blockchained Federated Learning
+
 ### Repository Structure
 
 - `benchmark/`: This directory contains the code and tools used in the benchmarking and testing phase .

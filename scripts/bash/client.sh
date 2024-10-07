@@ -31,7 +31,7 @@ python client.py \
   --account $ACCOUNT \
   --passphrase $PRIVATEKEY \
   --contract $CONTRACT \
-  --train /root/dataset/train/party_$((INDEX-1)).npz  \
+  --train /root/dataset/train/party_$((INDEX+500)).npz  \
   --test /root/dataset/test/party_$((INDEX-1)).npz \
   --learning_rate $learning_rate \
   --epochs $epochs \

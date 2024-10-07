@@ -15,7 +15,7 @@
       "chainId": 4444,
       "contracts": {
           "BusinessLogic":{
-            "address":"0x1E2a37F8Cd08f18Cd1A908D43CF53F1efe075e86",
+            "address":"0x0bb74468691928bD65600C65CC58D5fc010b7066",
               "estimateGas": true,
               "gas": {
                 "submitUpdate": 203960,
@@ -427,11 +427,6 @@
                   "name": "getUpdatesForAggregationTask",
                   "outputs": [
                     {
-                      "internalType": "address[]",
-                      "name": "",
-                      "type": "address[]"
-                    },
-                    {
                       "internalType": "string[]",
                       "name": "",
                       "type": "string[]"
@@ -451,14 +446,33 @@
                       "internalType": "address",
                       "name": "_addr",
                       "type": "address"
-                    },
-                    {
-                      "internalType": "uint256",
-                      "name": "taskId",
-                      "type": "uint256"
                     }
                   ],
                   "name": "historicalInteractions",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "interactionsTrainerWithPublisher",
                   "outputs": [
                     {
                       "internalType": "uint256",
@@ -546,6 +560,44 @@
                   "type": "function"
                 },
                 {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "publisherInteractions",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "_publisher",
+                      "type": "address"
+                    }
+                  ],
+                  "name": "publisherTotalInteractions",
+                  "outputs": [
+                    {
+                      "internalType": "uint256",
+                      "name": "",
+                      "type": "uint256"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                },
+                {
                   "inputs": [],
                   "name": "registerTaskPublisher",
                   "outputs": [],
@@ -553,7 +605,13 @@
                   "type": "function"
                 },
                 {
-                  "inputs": [],
+                  "inputs": [
+                    {
+                      "internalType": "address",
+                      "name": "adr",
+                      "type": "address"
+                    }
+                  ],
                   "name": "registerTrainer",
                   "outputs": [],
                   "stateMutability": "nonpayable",

@@ -59,6 +59,11 @@ contract BusinessLogic {
     mapping(uint => mapping(uint => mapping(address => bool))) updatesSubmitted; // task => round => Address => Bool
     mapping(uint => mapping(uint => mapping(address => Update))) public updates; // task => round => Address => Update
 
+
+    // keep track of a specific publisher's interactions
+    mapping(address => uint256) public publisherInteractions; // publisher => interactions
+
+    mapping(address => mapping(address => uint256)) public interactionsTrainerWithPublisher; // trainer => publisher => interactions
     // Reputation Details
     Trainer[] public accountsReputation; // address => reputation
 
@@ -132,7 +137,11 @@ contract BusinessLogic {
         require(_taskId + 1 <= tasks.length, "Task does not exist");
         Task storage task = tasks[_taskId];
         // require(task.publisher == msg.sender, "Only the publisher can select trainers");
-         task.trainers= taskTrainers;
+        publisherInteractions[task.publisher] += taskTrainers.length;
+        for (uint i = 0; i <= taskTrainers.length - 1; i++) {
+            interactionsTrainerWithPublisher[taskTrainers[i]][task.publisher] += 1; 
+        }
+        task.trainers= taskTrainers;
         task.state = "training";
            
     }
@@ -150,17 +159,9 @@ contract BusinessLogic {
         return isInAddressArray(tasks[_taskId].trainers, addr);
     }
 
-    // all interactions except the current task
-    function historicalInteractions(address _taskPublisher,address _addr,uint taskId) public view returns (uint256) {
-        require(registeredTrainers[_addr] == true,"Trainer is not registered in the system");
-        uint256 _totalInteractions = 0;
-        for (uint i = 0; i <= tasks.length - 1; i++) {
-            // u need to consider in each task the level of participation too
-            if (tasks[i].publisher == _taskPublisher && isTrainerForTask(i, _addr) && tasks[i].taskId != taskId) {
-                _totalInteractions += tasks[taskId].maxRounds;
-            }
-        }
-        return _totalInteractions;
+        // all interactions a trainer has with a specific publisher 
+    function historicalInteractions(address _taskPublisher,address _addr) public view returns (uint256) {
+        return interactionsTrainerWithPublisher[_addr][_taskPublisher];
     }
 
 
@@ -216,6 +217,11 @@ contract BusinessLogic {
         }
         }
         return _totalTasks;
+    }
+
+        // total number of interactions a publisher have
+    function publisherTotalInteractions(address _publisher) public view returns (uint256) {
+        return publisherInteractions[_publisher];
     }
 
     // Count the number of tasks published by the given address
@@ -283,12 +289,12 @@ contract BusinessLogic {
         return trainers;
     }
 
-    function getUpdatesForAggregationTask(uint taskId,uint _round) public  returns (address[] memory, string[] memory) {
+    function getUpdatesForAggregationTask(uint taskId,uint _round) public  returns (string[] memory) {
         string[] memory taskUpdates = new string[](tasks[taskId].trainers.length);
         for (uint i = 0; i < tasks[taskId].trainers.length; i++) {
             taskUpdates[i] = updates[taskId][_round][tasks[taskId].trainers[i]].weights;
         }
-        return (tasks[taskId].trainers, taskUpdates);
+        return (taskUpdates);
     }
 
     function UpdateGlobalModelWeights(uint _taskId,string memory globalModelWeightsCID) public  {
