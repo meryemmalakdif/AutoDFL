@@ -1,4 +1,4 @@
-### Welcome to AutoBFL: A Scalable and Automated Reputation-Aware Blockchained Federated Learning
+### Welcome to AutoDFL: A Scalable and Automated Reputation-Aware Decentralized Federated Learning
 
 ### Repository Structure
 
@@ -11,7 +11,6 @@
 - `setup/`: Contains the initial configuration and installation process required to run the whole framework (BC-Client
 Chainlink / ZkSync / FL nodes) nodes.
 
-Additionally, the project contains the evaluation metrics and visualization outputs generated during the study, organized in the file scripts_for_plots.ipynb.
 
 ### How to Use This Repository
 

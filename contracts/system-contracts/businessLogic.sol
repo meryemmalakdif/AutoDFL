@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
+import "./AccesManagement.sol";
 
-contract BusinessLogic {
+contract BusinessLogic is AccesManagement {
 
     struct Update {
         uint trainingAccuracy;
@@ -90,6 +91,7 @@ contract BusinessLogic {
 
     // Function to publish a task
     function publishTask(string memory _modelCID, string memory _infoCID, uint maxRounds, uint requiredTrainers) public {
+        require(registeredTaskPublishers[msg.sender],"Only Task publisher can invoke this");
         uint256 taskId = tasks.length; // Get the index of the newly added task
         tasks.push(Task({
                 taskId: taskId,
@@ -123,7 +125,7 @@ contract BusinessLogic {
     // registers a trainer to a specific task
     function registerTrainerTask(uint _taskId) public {
         require(_taskId < tasks.length, "Task does not exist");
-        require(registeredTrainers[msg.sender] == true, "the trainer is not registered in the bcfl system , he can't ask to join a task");
+        require(registeredTrainers[msg.sender] == true, "the trainer is not registered in the bfl system , he can't ask to join a task");
         Task storage task = tasks[_taskId];
         require(isInAddressArray(task.registeredTrainers, msg.sender) == false,"the trainer has already joined the task");
         task.registeredTrainers.push(msg.sender);
@@ -229,7 +231,7 @@ contract BusinessLogic {
         }
     }
 
-    function submitScore(uint _task,uint _round,Score[] memory _scores) public   {
+    function submitScore(uint _task,uint _round,Score[] memory _scores) public onlyOracle   {
         for (uint i = 0; i < _scores.length; i++) {
             scores[_task][_round].push(_scores[i]);
         }
@@ -249,7 +251,7 @@ contract BusinessLogic {
         return trainers;
     }
 
-    function getUpdatesForAggregationTask(uint taskId,uint _round) public  returns (string[] memory)  {
+    function getUpdatesForAggregationTask(uint taskId,uint _round) public onlyOracle returns (string[] memory)  {
         string[] memory taskUpdates = new string[](tasks[taskId].trainers.length);
         for (uint i = 0; i < tasks[taskId].trainers.length; i++) {
             taskUpdates[i] = updates[taskId][_round][tasks[taskId].trainers[i]].weights;
@@ -257,7 +259,7 @@ contract BusinessLogic {
         return (taskUpdates);
     }
 
-    function UpdateGlobalModelWeights(uint _taskId,string memory globalModelWeightsCID) public  {
+    function UpdateGlobalModelWeights(uint _taskId,string memory globalModelWeightsCID) public onlyOracle {
         require(_taskId + 1 <= tasks.length, "Task does not exist");
         tasks[_taskId].globalModelWeightsCID = globalModelWeightsCID;
         tasks[_taskId].currentRound++;
