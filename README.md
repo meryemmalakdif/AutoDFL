@@ -18,11 +18,13 @@ If you wish to reproduce the experiments or explore the code, please refer to th
 
 ### Citation 
 
-Please consider citing our paper and project if they help your research.
+Please consider citing our paper and project if they help your research:
+```bibtex
 @article{dif2025autodfl,
   title={AutoDFL: A Scalable and Automated Reputation-Aware Decentralized Federated Learning},
   author={Dif, Meryem Malak and Bouchiha, Mouhamed Amine and Rabah, Mourad and Ghamri-Doudane, Yacine},
   journal={arXiv preprint arXiv:2501.04331},
   year={2025}
 }
+```
 
