@@ -16,3 +16,13 @@ Chainlink / ZkSync / FL nodes) nodes.
 
 If you wish to reproduce the experiments or explore the code, please refer to the detailed documentation provided in each directory. The `README.md` files in individual folders will guide you through the setup and usage of the respective components.
 
+### Citation 
+
+Please consider citing our paper and project if they help your research.
+@article{dif2025autodfl,
+  title={AutoDFL: A Scalable and Automated Reputation-Aware Decentralized Federated Learning},
+  author={Dif, Meryem Malak and Bouchiha, Mouhamed Amine and Rabah, Mourad and Ghamri-Doudane, Yacine},
+  journal={arXiv preprint arXiv:2501.04331},
+  year={2025}
+}
+
